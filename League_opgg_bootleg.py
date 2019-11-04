@@ -12,7 +12,7 @@ def write_to_file(file_name, inputdata):
 
 def pull_user_data(league_name):
     try:
-        with open("api_key.txt") as f:
+        with open("G:\\api_key.txt") as f:
             api_key = f.read()
     except FileNotFoundError:
         print("No api key file found")
@@ -72,8 +72,8 @@ def pull_user_data(league_name):
                 "https://na1.api.riotgames.com/lol/match/v4/matches/{}".format(k), headers=headers).json()
             write_to_file(
                 "./{}_MatchHistory/{}_MatchInfo.json".format(league_name, k), match_info)
-            participant_id = [k['participantId'] for x in match_info["participantIdentities"]
-                            if x['player']['sumonerName'].lower() == league_name.lower()]
+            participant_id = [x['participantId'] for x in match_info["participantIdentities"]
+                            if x['player']['summonerName'].lower() == league_name.lower()]
             write_to_file("./{}_MatchHistory/{}_PlayerPerformance.json".format(
                 league_name, k), match_info['participants'][participant_id[0]-1])
             # time.sleep(2)
@@ -87,7 +87,7 @@ def display_match(match_id=None, league_name=None):
     try:
         with open("./{}_MatchHistory/{}_PlayerPerformance.json".format(league_name, match_id)) as j:
             json_file = json.load(j)
-            return json_file
+        return json_file
     except FileNotFoundError:
         return {
             "status": {
