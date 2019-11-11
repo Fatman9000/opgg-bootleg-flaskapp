@@ -62,7 +62,7 @@ def pull_user_data(league_name):
     os.makedirs("{}_MatchHistory".format(league_name), exist_ok=True)
 
     for k, v in temp_dict.items():
-        my_files = os.listdir(path="./{}_MatchHistory".format(league_name)) 
+        my_files = os.listdir(path="./{}_MatchHistory".format(league_name))
         if "{}_MatchInfo.json".format(k) in my_files:
             print("Already have match {}".format(k))
             continue
@@ -79,10 +79,12 @@ def pull_user_data(league_name):
             # time.sleep(2)
         except Exception as e:
             print("failed to pull user data: error: {}".format(e))
-
-    return {"status": 200}
+    json_of_match_ids = return_match_ids(league_name)
+    return json_of_match_ids
 
 # Json parsing below here
+
+
 def display_match(match_id=None, league_name=None):
     try:
         with open("./{}_MatchHistory/{}_PlayerPerformance.json".format(league_name, match_id)) as j:
@@ -109,6 +111,7 @@ def return_match_ids(league_name=None):
                 "message": "Data not found"
             }
         }
+
 
 if __name__ == "__main__":
     print("Press Ctrl + c to exit")
