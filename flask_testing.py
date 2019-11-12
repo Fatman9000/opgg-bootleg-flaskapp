@@ -17,13 +17,16 @@ app.config['SECRET_KEY'] = 'smash like now'
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 
+
 class NameForm(FlaskForm):
     name = StringField('What is your name?', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+
 class MatchForm(FlaskForm):
     match_id = StringField('What match do you want to view', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -35,11 +38,23 @@ def index():
         return redirect("/match")
     return render_template('index.html', form=form, name=session.get('name'))
 
+
 @app.route('/match', methods=['GET', 'POST'])
 def match():
     match_form = MatchForm()
+    if match_form.validate_on_submit():
+        session['selected_match'] = match_form.match_id.data
+        return redirect('/match/{}'.format(session['selected_match']))
     return render_template('match_list.html', form=match_form, matches=session.get('matches'))
 
+
+@app.route('/match/<id>', methods=['GET', 'POST'])
+def selected_match(id):
+    # match_form = MatchForm()
+    match_info = lob.display_match(id, session['name'])
+    return match_info
+
+
 def league_app(name):
-        var = lob.pull_user_data(name)
-        return var
+    var = lob.pull_user_data(name)
+    return var
