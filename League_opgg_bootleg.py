@@ -17,7 +17,7 @@ def pull_user_data(league_name):
     except FileNotFoundError:
         print("No api key file found")
         exit()
-    curent_date = datetime.today().strftime("%Y-%m-%d_%H-%M")
+    current_date = datetime.today().strftime("%Y-%m-%d_%H-%M")
     headers = {"Content-Type": "application/json",
                "Application-Type": "application/json", "X-Riot-Token": api_key}
     url = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/{}".format(
@@ -29,7 +29,7 @@ def pull_user_data(league_name):
     if user_data.status_code == 404:
         return {"status": "user not found"}
     write_to_file("{}'s_UserData_{}.json".format(
-        league_name, curent_date), user_data.json())
+        league_name, current_date), user_data.json())
 
     try:
         summoner_entries = r.get("https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/{}".format(
@@ -38,7 +38,7 @@ def pull_user_data(league_name):
         print("failed to pull user data: error: {}".format(e))
 
     write_to_file("{}'s_SummonerEntries_{}.json".format(
-        league_name, curent_date), summoner_entries)
+        league_name, current_date), summoner_entries)
 
     try:
         match_history = r.get("https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/{}?endIndex=4&beginIndex=1".format(
@@ -47,7 +47,7 @@ def pull_user_data(league_name):
         print("failed to pull user data: error: {}".format(e))
 
     write_to_file("{}'s_MatchHistory_{}.json".format(
-        league_name, curent_date), match_history)
+        league_name, current_date), match_history)
 
     # List comprehension for getting game ids
     game_ids = [{str(x["gameId"]): x["timestamp"]} for x in match_history["matches"]]
