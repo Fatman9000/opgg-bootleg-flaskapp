@@ -1,0 +1,72 @@
+{"Fatman9000": {
+      "userData": {
+            "id": "LvagSDSL2zf_sfippDmzRHH6baImfN-r0SqDcA7HXmYS48o",
+            "accountId": "YRZkSWxWacnqMntgNgtGuLjosrEJxL4iTXBIg1DDufEdjwE",
+            "puuid": "LBmldExrADEY0pQM-jTdlvYbAgG70W0Mt_25vNIUvA1nAS3ZLKDrJqVHBmzDIUi8_gpsoumb2Uxs5Q",
+            "name": "Fatman9000",
+            "profileIconId": 3505,
+            "revisionDate": 1572916840000,
+            "summonerLevel": 190
+      },
+      "summonerEntries": [
+            {
+                  "leagueId": "e79362e0-cd29-11e9-bd12-c81f66dbb56c",
+                  "queueType": "RANKED_SOLO_5x5",
+                  "tier": "SILVER",
+                  "rank": "II",
+                  "summonerId": "LvagSDSL2zf_sfippDmzRHH6baImfN-r0SqDcA7HXmYS48o",
+                  "summonerName": "Fatman9000",
+                  "leaguePoints": 0,
+                  "wins": 19,
+                  "losses": 23,
+                  "veteran": false,
+                  "inactive": false,
+                  "freshBlood": false,
+                  "hotStreak": false
+            }
+      ],
+      "matchHistory": [
+            {
+                  "platformId": "NA1",
+                  "gameId": 3203311576,
+                  "champion": 236,
+                  "queue": 400,
+                  "season": 13,
+                  "timestamp": 1573497309664,
+                  "role": "DUO_CARRY",
+                  "lane": "BOTTOM"
+            },
+            {
+                  "platformId": "NA1",
+                  "gameId": 3202039940,
+                  "champion": 64,
+                  "queue": 400,
+                  "season": 13,
+                  "timestamp": 1573412432343,
+                  "role": "NONE",
+                  "lane": "JUNGLE"
+            },
+            {
+                  "platformId": "NA1",
+                  "gameId": 3201977034,
+                  "champion": 11,
+                  "queue": 400,
+                  "season": 13,
+                  "timestamp": 1573410977425,
+                  "role": "DUO_SUPPORT",
+                  "lane": "NONE"
+            }
+      ],
+      "indices": [
+            {
+                  "startIndex": 1,
+                  "endIndex": 4,
+                  "totalGames": 129
+            }
+      ],
+"matchIds": {
+      "3203311576": 1573497309664,
+      "3202039940": 1573412432343,
+      "3201977034": 1573410977425
+}
+}}

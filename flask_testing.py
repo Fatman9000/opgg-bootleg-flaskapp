@@ -18,6 +18,7 @@ bootstrap = Bootstrap(app)
 moment = Moment(app)
 
 
+
 class NameForm(FlaskForm):
     name = StringField('What is your name?', validators=[DataRequired()])
     submit = SubmitField('Submit')
@@ -31,6 +32,7 @@ class MatchForm(FlaskForm):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = NameForm()
+    session['name'] = ''
     if form.validate_on_submit():
         session['name'] = form.name.data
         print(form.name.data)
@@ -45,7 +47,9 @@ def match():
     if match_form.validate_on_submit():
         session['selected_match'] = match_form.match_id.data
         return redirect('/match/{}'.format(session['selected_match']))
-    return render_template('match_list.html', form=match_form, matches=session.get('matches'))
+    matches=session.get('matches')
+    return render_template('match_list.html', form=match_form, matches=lob.return_match_ids(session["name"]))
+
 
 
 @app.route('/match/<id>', methods=['GET', 'POST'])

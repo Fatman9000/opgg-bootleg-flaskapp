@@ -4,11 +4,13 @@
 {% block title %}League opgg bootleg{% endblock %}
 
 {% block page_content %}
+
 <ul>
  {% for match in matches %}
  <li>{{ match }}</li>
  {% endfor %}
 </ul>
+
 
 {{ wtf.quick_form(form) }}
 <p>This process may take a while. Please do not hit refresh</p>

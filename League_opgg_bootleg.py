@@ -2,6 +2,12 @@ import json
 import os
 from datetime import datetime
 import requests as r
+from pymongo import MongoClient
+from pprint import pprint
+
+client = MongoClient("mongodb://localhost:27017")
+db=client.leagueData
+serverStatusResult=db.command("serverStatus")
 
 
 def write_to_file(file_name, inputdata):
@@ -12,8 +18,7 @@ def write_to_file(file_name, inputdata):
 
 def pull_user_data(league_name):
     try:
-        with open("G:\\api_key.txt") as f:
-            api_key = f.read()
+        api_key = os.environ.get("RIOT_ENV_VAR")
     except FileNotFoundError:
         print("No api key file found")
         exit()
@@ -101,7 +106,7 @@ def display_match(match_id=None, league_name=None):
 
 def return_match_ids(league_name=None):
     try:
-        with open("{}_MatchIds.json".format(league_name).lower()) as f:
+        with open("{}_MatchIds.json".format(league_name)) as f:
             match_ids = json.load(f)
         return match_ids
     except FileNotFoundError:
