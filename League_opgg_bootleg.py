@@ -15,6 +15,10 @@ def write_to_file(file_name, inputdata):
     with open(file_name, "a") as f:
         json.dump(inputdata, f)
 
+def write_to_db(inputdata):
+    """creates a object in a mongo database"""
+    db.leagueData.insert_one()
+
 
 def pull_user_data(league_name):
     try:
@@ -33,8 +37,6 @@ def pull_user_data(league_name):
         return {"status": "something really went wrong"}
     if user_data.status_code == 404:
         return {"status": "user not found"}
-    write_to_file("{}'s_UserData_{}.json".format(
-        league_name, current_date), user_data.json())
 
     try:
         summoner_entries = r.get("https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/{}".format(
@@ -42,50 +44,37 @@ def pull_user_data(league_name):
     except Exception as e:
         print("failed to pull user data: error: {}".format(e))
 
-    write_to_file("{}'s_SummonerEntries_{}.json".format(
-        league_name, current_date), summoner_entries)
-
     try:
         match_history = r.get("https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/{}?endIndex=4&beginIndex=1".format(
             user_data.json()["accountId"]), headers=headers).json()
     except Exception as e:
         print("failed to pull user data: error: {}".format(e))
 
-    write_to_file("{}'s_MatchHistory_{}.json".format(
-        league_name, current_date), match_history)
-
-    # List comprehension for getting game ids
     game_ids = [{str(x["gameId"]): x["timestamp"]} for x in match_history["matches"]]
 
     temp_dict = {}
     for my_dict in game_ids:
         temp_dict.update(my_dict)
-    # create file
-    with open("{}_MatchIds.json".format(league_name), "w") as f:
-        json.dump(temp_dict, f)
-    # create directory
-    os.makedirs("{}_MatchHistory".format(league_name), exist_ok=True)
 
-    for k, v in temp_dict.items():
-        my_files = os.listdir(path="./{}_MatchHistory".format(league_name))
-        if "{}_MatchInfo.json".format(k) in my_files:
-            print("Already have match {}".format(k))
-            continue
-        print("Getting match {}".format(k))
-        try:
-            match_info = r.get(
-                "https://na1.api.riotgames.com/lol/match/v4/matches/{}".format(k), headers=headers).json()
-            write_to_file(
-                "./{}_MatchHistory/{}_MatchInfo.json".format(league_name, k), match_info)
-            participant_id = [x['participantId'] for x in match_info["participantIdentities"]
-                            if x['player']['summonerName'].lower() == league_name.lower()]
-            write_to_file("./{}_MatchHistory/{}_PlayerPerformance.json".format(
-                league_name, k), match_info['participants'][participant_id[0]-1])
-            # time.sleep(2)
-        except Exception as e:
-            print("failed to pull user data: error: {}".format(e))
     json_of_match_ids = return_match_ids(league_name)
-    return json_of_match_ids
+    match_ids = {}
+    for x in game_ids:
+        match_ids.update(x)
+
+    player_info = {
+
+        "name": league_name,
+        "userData": [user_data.json(), ],
+        "summonerEntries": summoner_entries,
+        "matchHistory": match_history["matches"],
+        "indices": [{
+            "startIndex": match_history["startIndex"], "endIndex": match_history["endIndex"],
+            "totalGames": match_history["totalGames"]
+        }],
+        "matchIds": match_ids
+
+    }
+    db.playerData.insert_one(player_info)
 
 # Json parsing below here
 
@@ -119,10 +108,9 @@ def return_match_ids(league_name=None):
 
 
 if __name__ == "__main__":
-    print("Press Ctrl + c to exit")
-    league_name = input("Enter your league username ")
-    pull_user_data(league_name)
-    match_id = input("input match id ")
+    # league_name = input("Enter your league username ")
+    test = pull_user_data("Deppong")
+    # match_id = input("input match id ")
 
 
 #this comment is for testing
