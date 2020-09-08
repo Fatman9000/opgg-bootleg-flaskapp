@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 import requests as r
 from pymongo import MongoClient
+import re
 from pprint import pprint
 
 client = MongoClient("mongodb://localhost:27017")
@@ -108,8 +109,14 @@ def return_match_ids(league_name=None):
 
 
 if __name__ == "__main__":
-    # league_name = input("Enter your league username ")
-    test = pull_user_data("Deppong")
+    league_name = input("Enter your league username ")
+    # try:
+    existing_player_info = db.playerData
+    player_info = existing_player_info.find_one({'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)})
+    if player_info == None:
+        print("Info Not in database")
+        
+        # pull_user_data(league_name)
     # match_id = input("input match id ")
 
 
