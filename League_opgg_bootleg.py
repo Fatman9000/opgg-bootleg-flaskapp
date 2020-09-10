@@ -22,6 +22,11 @@ def write_to_db(inputdata):
 
 
 def pull_user_data(league_name):
+    existing_player_info = db.playerData
+    player_in_database = existing_player_info.find_one({'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)})
+    if player_in_database:
+        return player_in_database
+        # print(player_in_database)
     try:
         api_key = os.environ.get("RIOT_ENV_VAR")
     except FileNotFoundError:
@@ -76,6 +81,8 @@ def pull_user_data(league_name):
 
     }
     db.playerData.insert_one(player_info)
+    return player_info
+
 
 # Json parsing below here
 
@@ -110,13 +117,20 @@ def return_match_ids(league_name=None):
 
 if __name__ == "__main__":
     league_name = input("Enter your league username ")
-    # try:
+    
     existing_player_info = db.playerData
-    player_info = existing_player_info.find_one({'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)})
-    if player_info == None:
+    player_in_database = existing_player_info.find_one({'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)})
+    
+    if player_in_database == None:
         print("Info Not in database")
-        
-        # pull_user_data(league_name)
+        pud = pull_user_data(league_name)
+
+
+
+
+
+# db.playerData.update_one({'_id}, {player_})
+# 
     # match_id = input("input match id ")
 
 

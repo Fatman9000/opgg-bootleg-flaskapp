@@ -36,7 +36,7 @@ def index():
     if form.validate_on_submit():
         session['name'] = form.name.data
         print(form.name.data)
-        session['matches'] = league_app(form.name.data)
+        session['matches'] = league_app(form.name.data)['matchIds']
         return redirect("/match")
     return render_template('index.html', form=form, name=session.get('name'))
 
@@ -48,7 +48,7 @@ def match():
         session['selected_match'] = match_form.match_id.data
         return redirect('/match/{}'.format(session['selected_match']))
     matches=session.get('matches')
-    return render_template('match_list.html', form=match_form, matches=lob.return_match_ids(session["name"]))
+    return render_template('match_list.html', form=match_form, matches=session["matches"])
 
 
 
@@ -61,4 +61,5 @@ def selected_match(id):
 
 def league_app(name):
     var = lob.pull_user_data(name)
+    # print(var)
     return var
