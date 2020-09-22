@@ -32,12 +32,14 @@ class MatchForm(FlaskForm):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = NameForm()
+    match_form = MatchForm()
     session['name'] = ''
     if form.validate_on_submit():
         session['name'] = form.name.data
         print(form.name.data)
-        session['matches'] = league_app(form.name.data)['matchIds']
-        return redirect("/match")
+        player_data = league_app(form.name.data)
+        session['matches'] = player_data['matchIds']
+        return render_template("match_list.html",form=match_form , matches=player_data)
     return render_template('index.html', form=form, name=session.get('name'))
 
 
@@ -55,7 +57,7 @@ def match():
 @app.route('/match/<id>', methods=['GET', 'POST'])
 def selected_match(id):
     # match_form = MatchForm()
-    match_info = lob.display_match(id, session['name'])
+    match_info = player_data
     return match_info
 
 

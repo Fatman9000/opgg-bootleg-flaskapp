@@ -6,12 +6,12 @@
 {% block page_content %}
 
 <ul>
- {% for match in matches %}
- <li>{{ match }}</li>
+ {% for match in matches["matchIds"] %}
+ <li><a href="/match/{{ match }}">{{ match }}</a></li>
  {% endfor %}
 </ul>
 
-
+</a>
 {{ wtf.quick_form(form) }}
 <p>This process may take a while. Please do not hit refresh</p>
 {% endblock %}

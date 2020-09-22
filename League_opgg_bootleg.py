@@ -88,17 +88,23 @@ def pull_user_data(league_name):
 
 
 def display_match(match_id=None, league_name=None):
-    try:
-        with open("./{}_MatchHistory/{}_PlayerPerformance.json".format(league_name, match_id)) as j:
-            json_file = json.load(j)
-        return json_file
-    except FileNotFoundError:
-        return {
-            "status": {
-                "status_code": 404,
-                "message": "Data not found"
-            }
-        }
+
+    # selected_match = existing_player_info.find({'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)}, "matchHistoy.")
+
+
+
+    # try:
+    #     with open("./{}_MatchHistory/{}_PlayerPerformance.json".format(league_name, match_id)) as j:
+    #         json_file = json.load(j)
+    #     return json_file
+    # except FileNotFoundError:
+    #     return {
+    #         "status": {
+    #             "status_code": 404,
+    #             "message": "Data not found"
+    #         }
+    #     }
+    pass
 
 
 def return_match_ids(league_name=None):
