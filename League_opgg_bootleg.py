@@ -127,10 +127,9 @@ if __name__ == "__main__":
     existing_player_info = db.playerData
     player_in_database = existing_player_info.find_one({'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)})
     
-    if player_in_database == None:
+    if player_in_database is None:
         print("Info Not in database")
         pud = pull_user_data(league_name)
-
 
 
 
