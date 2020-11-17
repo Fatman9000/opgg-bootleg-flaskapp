@@ -3,20 +3,21 @@ import json
 from flask import (Flask, flash, redirect, render_template, request, session,
                    url_for)
 
-
+from pymongo import MongoClient
 import League_opgg_bootleg as lob
 import user
 from user import User
 from database import Database
+
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'smash like now'
 
 
-@app.before_first_request
-def initialize_database():
-    Database.initialize()
+# @app.before_first_request
+# def initialize_database():
+#     Database.initialize()
 
 # class NameForm(FlaskForm):
 #     name = StringField('What is your name?', validators=[DataRequired()])
@@ -34,12 +35,13 @@ def home_page():
 @app.route('/validuser', methods=['GET', 'POST'])
 def index():
     name = request.form["name"]
+    User.login(name)
+    # if User.login_valid(name):
+    player_data = league_app(name)
 
-    if User.login_valid(name):
-        User.login(name)
-        player_data = league_app(name)
-        session['matches'] = player_data['matchIds']
-        return render_template("match_list.html", matches=player_data)
+    session['matches'] = player_data['matchIds']
+    print(player_data)
+    return render_template("match_list.html", matches=player_data)
     # return render_template('index.html')
 
 
@@ -54,11 +56,13 @@ def index():
 
 
 
-# @app.route('/match/<id>', methods=['GET', 'POST'])
-# def selected_match(id):
-#     # match_form = MatchForm()
-#     match_info = matches
-#     return 
+@app.route('/match/<matchid>', methods=['GET', 'POST'])
+def selected_match(matchid):
+
+    player_info = league_app(session["name"])
+    # print(player_info)
+    match = [x for x in player_info["matchHistory"] if x["gameId"] == int(matchid)]
+    return match[0]
 
 
 def league_app(name):

@@ -5,10 +5,10 @@ import requests as r
 from pymongo import MongoClient
 import re
 from pprint import pprint
-
+from database import Database
 client = MongoClient("mongodb://localhost:27017")
 db=client.leagueData
-serverStatusResult=db.command("serverStatus")
+# serverStatusResult=db.command("serverStatus")
 
 
 def write_to_file(file_name, inputdata):
@@ -22,6 +22,8 @@ def write_to_db(inputdata):
 
 
 def pull_user_data(league_name):
+    client = MongoClient("mongodb://localhost:27017")
+    db=client.leagueData
     existing_player_info = db.playerData
     player_in_database = existing_player_info.find_one({'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)})
     if player_in_database:
@@ -81,6 +83,7 @@ def pull_user_data(league_name):
 
     }
     db.playerData.insert_one(player_info)
+    client.close()
     return player_info
 
 

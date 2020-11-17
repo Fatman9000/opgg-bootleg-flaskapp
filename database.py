@@ -10,16 +10,16 @@ class Database(object):
     @staticmethod
     def initialize():
         client = MongoClient(Database.URI)
-        Database.DATABASE = client['leagueData']
+        Database.DATABASE = client.leagueData
 
     @staticmethod
     def insert(data):
-        Database.DATABASE['leagueData'].insert(data)
+        Database.DATABASE['playerData'].insert(data)
 
     @staticmethod
     def find(query):
-        return Database.DATABASE['leagueData'].find(query)
+        return Database.DATABASE['playerData'].find(query)
 
     @staticmethod
     def find_one(query):
-        return Database.DATABASE['leagueData'].find_one(query)
+        return Database.DATABASE['playerData'].find_one(query)

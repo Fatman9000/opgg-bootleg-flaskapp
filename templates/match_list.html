@@ -1,15 +1,18 @@
 {% extends "base.html" %}
+{% block content %}
 
-{% block title %}League opgg bootleg{% endblock %}
 
-{% block page_content %}
 
-<ul>
- {% for match in matches["matchIds"] %}
- <li><a href="/match/{{ match }}">{{ match }}</a></li>
- {% endfor %}
-</ul>
-
-</a>
-<p>This process may take a while. Please do not hit refresh</p>
-{% endblock %}
+<div class="container page-form">
+      <form action="/validuser" id="name-form" method="post">
+            {% block title %}{{ matches["name"] }}{% endblock %}
+            <ul>
+                  {% for match in matches["matchIds"] %}
+                  <li><a href="/match/{{ match }}">{{ match }}</a></li>
+                  {% endfor %}
+            </ul>
+            <p>Select the match you wish to view</p>
+            {% endblock %}
+      </form>
+</div>
+<div class="page-header">
