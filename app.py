@@ -62,7 +62,8 @@ def selected_match(matchid):
     player_info = league_app(session["name"])
     # print(player_info)
     match = [x for x in player_info["matchHistory"] if x["gameId"] == int(matchid)]
-    return match[0]
+    return render_template("match_display.html", match_data=match[0], name=session["name"])
+
 
 
 def league_app(name):

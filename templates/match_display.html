@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+      {% block title %}{{ name }}{% endblock %}
+<table class="table">
+      <thead>
+            <tr>
+                  <th scope="row">platformId</th>
+                  <td>{{ match_data["platformId"] }}</td>
+            </tr>
+            <tr>
+                  <th scope="row">gameid</th>
+                  <td>{{ match_data["gameId"] }}</td>
+            </tr>
+            <tr>
+                  <th scope="row">season</th>
+                  <td>{{ match_data["season"] }}</td>
+            </tr>
+            <tr>
+                  <th scope="row">timestamp</th>
+                  <td>{{ match_data["timestamp"] }}</td>
+            </tr>
+            <tr>
+                  <th scope="row">queue</th>
+                  <td>{{ match_data["queue"] }}</td>
+            </tr>
+            <tr>
+                  <th scope="row">role</th>
+                  <td>{{ match_data["role"] }}</td>
+            </tr>
+            <tr>
+                  <th scope="row">lane</th>
+                  <td>{{ match_data["lane"] }}</td>
+            </tr>
+            <tr>
+                  <th scope="row">champion</th>
+                  <td>{{ match_data["champion"] }}</td>
+            </tr>
+      </thead>
+</table>
+</div>
+{% endblock %}
