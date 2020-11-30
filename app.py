@@ -1,5 +1,5 @@
 import json
-
+from decorators import requires_user
 from flask import (Flask, flash, redirect, render_template, request, session,
                    url_for)
 
@@ -57,8 +57,8 @@ def index():
 
 
 @app.route('/match/<matchid>', methods=['GET', 'POST'])
+@requires_user
 def selected_match(matchid):
-
     player_info = league_app(session["name"])
     # print(player_info)
     match = [x for x in player_info["matchHistory"] if x["gameId"] == int(matchid)]
