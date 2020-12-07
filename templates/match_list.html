@@ -3,13 +3,17 @@
 <div class="container page-form">
       <form action="/validuser" id="name-form" method="post">
             {% block title %}{{ matches["name"] }}{% endblock %}
+            <p>Man you suck fat dicks bro</p>
             <ul>
                   {% for match in matches["matchIds"] %}
                   <li><a href="/match/{{ match }}">{{ match }}</a></li>
                   {% endfor %}
             </ul>
             <p>Select the match you wish to view</p>
-            {% endblock %}
+
+            <button class="btn btn-success" type="submit">load new matches</button>
+
       </form>
 </div>
-<div class="page-header">
+{% endblock %}
+<!-- <div class="page-header"> -->

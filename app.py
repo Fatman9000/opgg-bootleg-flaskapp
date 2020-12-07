@@ -32,8 +32,11 @@ app.config['SECRET_KEY'] = 'smash like now'
 def home_page():
     return render_template("index.html")
 
+
+
 @app.route('/validuser', methods=['GET', 'POST'])
 def index():
+    
     name = request.form["name"]
     User.login(name)
     # if User.login_valid(name):
@@ -41,6 +44,7 @@ def index():
 
     session['matches'] = player_data['matchIds']
     print(player_data)
+
     return render_template("match_list.html", matches=player_data)
     # return render_template('index.html')
 

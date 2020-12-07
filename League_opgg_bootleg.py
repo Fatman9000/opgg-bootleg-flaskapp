@@ -53,7 +53,7 @@ def pull_user_data(league_name):
         print("failed to pull user data: error: {}".format(e))
 
     try:
-        match_history = r.get("https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/{}?endIndex=4&beginIndex=1".format(
+        match_history = r.get("https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/{}?endIndex=20&beginIndex=1".format(
             user_data.json()["accountId"]), headers=headers).json()
     except Exception as e:
         print("failed to pull user data: error: {}".format(e))
