@@ -138,3 +138,5 @@ dmypy.json
 cython_debug/
 
 api_key.txt
+flask.sh
+mongoTesting.py
