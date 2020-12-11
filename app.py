@@ -38,6 +38,7 @@ def home_page():
 def index():
     
     name = request.form["name"]
+    
     User.login(name)
     # if User.login_valid(name):
     player_data = league_app(name)
@@ -45,8 +46,14 @@ def index():
     session['matches'] = player_data['matchIds']
     print(player_data)
 
-    return render_template("match_list.html", matches=player_data)
+    return render_template("match_list.html", matches=player_data, name=name)
     # return render_template('index.html')
+
+
+@app.route("/validuser/updated", methods=['POST'])
+def update_matchlist():
+    player_data = league_app(session["name"], True)
+    return render_template("match_list.html", matches=player_data)
 
 
 # @app.route('/match', methods=['GET', 'POST'])
@@ -70,7 +77,7 @@ def selected_match(matchid):
 
 
 
-def league_app(name):
-    var = lob.pull_user_data(name)
+def league_app(name, update_info=False):
+    var = lob.pull_user_data(name, update_info)
     # print(var)
     return var

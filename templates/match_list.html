@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container page-form">
-      <form action="/validuser" id="name-form" method="post">
+      <form action="/validuser/updated" id="name-form" method="post">
             {% block title %}{{ matches["name"] }}{% endblock %}
-            <p>Man you suck fat dicks bro</p>
             <ul>
                   {% for match in matches["matchIds"] %}
                   <li><a href="/match/{{ match }}">{{ match }}</a></li>
