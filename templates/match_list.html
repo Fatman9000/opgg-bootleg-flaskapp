@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container page-form">
-      <form action="/validuser/updated" id="name-form" method="post">
+      <form action="/validuser/updated" id="name-form" method=["get","post"]>
             {% block title %}{{ matches["name"] }}{% endblock %}
             <ul>
                   {% for match in matches["matchIds"] %}

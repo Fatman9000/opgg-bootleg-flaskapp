@@ -50,7 +50,7 @@ def index():
     # return render_template('index.html')
 
 
-@app.route("/validuser/updated", methods=['POST'])
+@app.route("/validuser/updated", methods=['GET'])
 def update_matchlist():
     player_data = league_app(session["name"], True)
     return render_template("match_list.html", matches=player_data)
