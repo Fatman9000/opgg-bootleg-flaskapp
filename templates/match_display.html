@@ -3,7 +3,10 @@
 
 <div class="container">
       {% block title %}{{ name }}{% endblock %}
-<table class="table">
+      <div class="overflow-auto">
+            {{match_data}}
+      </div>
+<!-- <table class="table">
       <thead>
             <tr>
                   <th scope="row">platformId</th>
@@ -38,6 +41,6 @@
                   <td>{{ match_data["champion"] }}</td>
             </tr>
       </thead>
-</table>
+</table> -->
 </div>
 {% endblock %}

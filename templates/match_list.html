@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container page-form">
-      <form action="/validuser/updated" id="name-form" method=["get","post"]>
+      <form action="/matchlist/updated" id="name-form" method=["GET,POST"]>
             {% block title %}{{ matches["name"] }}{% endblock %}
-            <ul>
+            <ul style="overflow: auto;">
                   {% for match in matches["matchIds"] %}
                   <li><a href="/match/{{ match }}">{{ match }}</a></li>
                   {% endfor %}
