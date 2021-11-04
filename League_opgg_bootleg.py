@@ -115,12 +115,11 @@ def display_match(match_id=None, league_name=None):
             print("failed to pull match data: error: {}".format(e))
         match_display["_id"] = match_id
         db.matchData.insert_one(match_display)
-        match_display = json.dumps(match_display, indent=4)
-        return match_display
+        existing_match_info = db.matchData.find_one({"_id": match_id})
+    if existing_match_info:
+        return existing_match_info
     
-
     
-
 
 def return_match_ids(league_name=None):
     pass
