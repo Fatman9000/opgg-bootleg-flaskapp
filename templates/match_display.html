@@ -1,80 +1,114 @@
 {% extends "base.html" %}
 {% block content %}
-
-<div class="container">
-      {% block title %}{{ name }}{% endblock %}
-      <div id="accordion-players">
-            <div class="card">
-                  <div class="card-header" id="heading-players">
-                        <h5 class="mb-0">
-                              <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-players"
-                                    aria-expanded="true" aria-controls="collapse-players">
-                                    Players
-                              </button>
-                        </h5>
-                  </div>
-                  <div id="collapse-players" class="collapse show" aria-labelledby="heading-players"
-                        data-parent="#accordion-players">
-                        <div class="card-body">
-                              {% for player in match_data.info.participants %}
-                              <div id="accordion-players-{{loop.index}}">
-                                    <div class="card">
-                                          <div class="card-header" id="heading-players-{{loop.index}}">
-                                                <h5 class="mb-0">
-                                                      <button class="btn btn-link" data-toggle="collapse"
-                                                            data-target="#collapse-players-{{loop.index}}"
-                                                            aria-expanded="true"
-                                                            aria-controls="collapse-players-{{loop.index}}">
-                                                            {{ player.summonerName }}
-                                                      </button>
-                                                </h5>
-                                          </div>
-                                          <div id="collapse-players-{{loop.index}}" class="collapse"
-                                                aria-labelledby="heading-players-{{loop.index}}"
-                                                data-parent="#accordion-players-{{loop.index}}">
-                                                <div class="card-body">
-                                                      <table>
-                                                            {% for key, value in player.items() %}
-                                                            <tr>
-                                                                  <td>{{key}}</td>
-                                                                  <td>{{value}}</td>
-                                                            </tr>
-                                                            {% endfor %}
-                                                      </table>
-                                                </div>
-                                          </div>
+<div class="container-fluid">
+      <div class="row">
+            <div class="col-5">
+                  {% block title %} <h3>User</h3> {% endblock %}
+                  <div id="accordion-user">
+                        <div class="card">
+                              <div class="card-header" id="heading-user">
+                                    <h5 class="mb-0">
+                                          <button class="btn btn-link" data-toggle="collapse"
+                                                data-target="#collapse-user" aria-expanded="true"
+                                                aria-controls="collapse-user">
+                                                {{name}}
+                                          </button>
+                                    </h5>
+                              </div>
+                              <div id="collapse-user" class="collapse" aria-labelledby="heading-user"
+                                    data-parent="#accordion-user">
+                                    <div class="card-body">
+                                          <table>
+                                                {% for key,value in player_info.items() %}
+                                                <tr>
+                                                      <td>{{key}}</td>
+                                                      <td>{{value}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                          </table>
                                     </div>
                               </div>
-                              {% endfor %}
                         </div>
                   </div>
             </div>
-      </div>
-      <div id="accordion-match">
-            <div class="card">
-                  <div class="card-header" id="heading-match">
-                        <h5 class="mb-0">
-                              <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-match"
-                                    aria-expanded="true" aria-controls="collapse-match">
-                                    Match info
-                              </button>
-                        </h5>
+            <div class="col-7">
+                  {% block match_head %}<h3>{{ match_data._id }}</h3>{% endblock %}
+                  <div id="accordion-players">
+                        <div class="card">
+                              <div class="card-header" id="heading-players">
+                                    <h5 class="mb-0">
+                                          <button class="btn btn-link" data-toggle="collapse"
+                                                data-target="#collapse-players" aria-expanded="true"
+                                                aria-controls="collapse-players">
+                                                Players
+                                          </button>
+                                    </h5>
+                              </div>
+                              <div id="collapse-players" class="collapse show" aria-labelledby="heading-players"
+                                    data-parent="#accordion-players">
+                                    <div class="card-body">
+                                          {% for player in match_data.info.participants %}
+                                          <div id="accordion-players-{{loop.index}}">
+                                                <div class="card">
+                                                      <div class="card-header" id="heading-players-{{loop.index}}">
+                                                            <h5 class="mb-0">
+                                                                  <button class="btn btn-link" data-toggle="collapse"
+                                                                        data-target="#collapse-players-{{loop.index}}"
+                                                                        aria-expanded="true"
+                                                                        aria-controls="collapse-players-{{loop.index}}">
+                                                                        {{ player.summonerName }}
+                                                                  </button>
+                                                            </h5>
+                                                      </div>
+                                                      <div id="collapse-players-{{loop.index}}" class="collapse"
+                                                            aria-labelledby="heading-players-{{loop.index}}"
+                                                            data-parent="#accordion-players-{{loop.index}}">
+                                                            <div class="card-body">
+                                                                  <table>
+                                                                        {% for key, value in player.items() %}
+                                                                        <tr>
+                                                                              <td>{{key}}</td>
+                                                                              <td>{{value}}</td>
+                                                                        </tr>
+                                                                        {% endfor %}
+                                                                  </table>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          {% endfor %}
+                                    </div>
+                              </div>
+                        </div>
                   </div>
-                  <div id="collapse-match" class="collapse" aria-labelledby="heading-match"
-                        data-parent="#accordion-match">
-                        <div class="card-body">
-                              <table>
-                                    {% for key,value in match_data.info.items() %}
-                                    <tr>
-                                          <td>{{key}}</td>
-                                          <td>{{value}}</td>
-                                    </tr>
-                                    {% endfor %}
-                              </table>
+                  <div id="accordion-match">
+                        <div class="card">
+                              <div class="card-header" id="heading-match">
+                                    <h5 class="mb-0">
+                                          <button class="btn btn-link" data-toggle="collapse"
+                                                data-target="#collapse-match" aria-expanded="true"
+                                                aria-controls="collapse-match">
+                                                Match info
+                                          </button>
+                                    </h5>
+                              </div>
+                              <div id="collapse-match" class="collapse" aria-labelledby="heading-match"
+                                    data-parent="#accordion-match">
+                                    <div class="card-body">
+                                          {% set _dummy=match_data.info.pop("participants") %}
+                                          <table>
+                                                {% for key,value in match_data.info.items() %}
+                                                <tr>
+                                                      <td>{{key}}</td>
+                                                      <td>{{value}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                          </table>
+                                    </div>
+                              </div>
                         </div>
                   </div>
             </div>
       </div>
 </div>
-
 {% endblock %}
