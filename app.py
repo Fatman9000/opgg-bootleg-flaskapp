@@ -66,6 +66,7 @@ def update_matchlist():
 @requires_user
 def selected_match(matchid):
     player_info = league_app(session["name"])
+    del player_info["_id"]
     match = lob.display_match(matchid)
     return render_template("match_display.html", match_data=match, player_info=player_info, name=session["name"])
 
