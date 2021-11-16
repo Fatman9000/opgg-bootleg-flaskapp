@@ -72,7 +72,12 @@ def pull_user_data(league_name, update_info):
     # match_ids = {}
     # for x in game_ids:
     #     match_ids.update(x)
-
+    try:
+        for match_id in player_in_database["matchIds"]:
+            if match_id not in match_history:
+                match_history.append(match_id)
+    except:
+        pass
     player_info = {
 
         "name": league_name,
@@ -87,8 +92,10 @@ def pull_user_data(league_name, update_info):
 
     }
     if update_info == True:
-        db.playerData.update_one({'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)}, {'$set': {
-                                 'userData': player_info['userData'], 'summonerEntries': player_info['summonerEntries'], 'matchIds': player_info['matchIds']}})
+        db.playerData.update_one({'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)}, {'$set':{
+                                 'userData': player_info['userData'], 'summonerEntries': player_info['summonerEntries']}})
+        for match_id in player_info['matchIds']:
+            db.playerData.update_one({'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)}, {'$addToSet': {'matchIds': match_id}})
     else:
         db.playerData.insert_one(player_info)
     client.close()

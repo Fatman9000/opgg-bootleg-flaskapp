@@ -15,7 +15,7 @@
                                           </button>
                                     </h5>
                               </div>
-                              <div id="collapse-user" class="collapse" aria-labelledby="heading-user"
+                              <div id="collapse-user" class="collapse show" aria-labelledby="heading-user"
                                     data-parent="#accordion-user">
                                     <div class="card-body">
                                           <table>
@@ -52,12 +52,15 @@
                                                 <div class="card">
                                                       <div class="card-header" id="heading-players-{{loop.index}}">
                                                             <h5 class="mb-0">
-                                                                  <button class="btn btn-link" data-toggle="collapse"
-                                                                        data-target="#collapse-players-{{loop.index}}"
-                                                                        aria-expanded="true"
-                                                                        aria-controls="collapse-players-{{loop.index}}">
-                                                                        {{ player.summonerName }}
-                                                                  </button>
+                                                                  <form action="/validuser" method="post">
+                                                                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-players-{{loop.index}}"
+                                                                              aria-expanded="true" aria-controls="collapse-players-{{loop.index}}">
+                                                                              {{ player.summonerName }}
+                                                                        </button>
+                                                                        <button class="btn btn-link" id="username" name="username" value="{{ player.summonerName }}" style="float: right;">
+                                                                              Go To Profile
+                                                                        </button>
+                                                                  </form>
                                                             </h5>
                                                       </div>
                                                       <div id="collapse-players-{{loop.index}}" class="collapse"

@@ -1,18 +1,51 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container page-form">
-      <form action="/matchlist/updated" id="name-form" method=["GET,POST"]>
-            {% block title %}{{ matches["name"] }}{% endblock %}
-            <ul style="overflow: auto;">
-                  {% for match in matches["matchIds"] %}
-                  <li><a href="/match/{{ match }}">{{ match }}</a></li>
-                  {% endfor %}
-            </ul>
-            <p>Select the match you wish to view</p>
-
-            <button class="btn btn-success" type="submit">load new matches</button>
-
-      </form>
+<div class="container-fluid name-form">
+      <div class="row">
+            <div class="col-6">
+                  {% block title %}<h3>User</h3>{% endblock title %}
+                  <div id="accordion-user">
+                        <div class="card">
+                              <div class="card-header" id="heading-user">
+                                    <h5 class="mb-0">
+                                          <button class="btn btn-link" data-toggle="collapse"
+                                                data-target="#collapse-user" aria-expanded="true"
+                                                aria-controls="collapse-user">
+                                                {{player_info.userData[0]["profileIconId"]}}                                   
+                                                <img src="/static/11.22.1/img/profileicon/{{ player_info.userData[0]['profileIconId'] }}.png" alt="">
+                                                {{name}}
+                                          </button>
+                                    </h5>
+                              </div>
+                              <div id="collapse-user" class="collapse show" aria-labelledby="heading-user"
+                                    data-parent="#accordion-user">
+                                    <div class="card-body">
+                                          <table>
+                                                {% for key,value in player_info.items() %}
+                                                <tr>
+                                                      <td>{{key}}</td>
+                                                      <td>{{value}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                          </table>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+            <div class="col-6">
+                  {% block matchlist %}<h3>Matchlist</h3>{% endblock %}
+                  <form action="/matchlist/updated" id="name-form" method=["GET,POST"]>
+                        <ul style="overflow: auto;">
+                              {% for match in player_info["matchIds"] %}
+                              <li><a href="/match/{{ match }}">{{ match }}</a></li>
+                              {% endfor %}
+                        </ul>
+                        <p>Select the match you wish to view</p>
+                        <button class="btn btn-success" type="submit">load new matches</button>
+                  </form>
+            </div>
+      </div>
 </div>
 {% endblock %}
 <!-- <div class="page-header"> -->

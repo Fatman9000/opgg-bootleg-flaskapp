@@ -35,21 +35,22 @@ def home_page():
 
 @app.route('/validuser', methods=['GET', 'POST'])
 def index():
-    name = request.form["name"]
+    name = request.form["username"]
     User.login(name)
     return redirect("/matchlist")
     # return render_template('index.html')
 
 @app.route("/matchlist", methods=["GET"])
 def matchlist():
-    player_data = league_app(session["name"])
-    session['matches'] = player_data['matchIds']
-    return render_template("match_list.html", matches=player_data, name=session["name"])
+    player_info = league_app(session["name"])
+    del player_info["_id"]
+    session['matches'] = player_info['matchIds']
+    return render_template("match_list.html", player_info=player_info, name=session["name"])
 
 @app.route("/matchlist/updated", methods=['GET'])
 def update_matchlist():
-    player_data = league_app(session["name"], True)
-    return render_template("match_list.html", matches=player_data)
+    player_info = league_app(session["name"], True)
+    return render_template("match_list.html", player_info=player_info, name=session["name"])
 
 # @app.route('/match', methods=['GET', 'POST'])
 # def match():
@@ -69,7 +70,6 @@ def selected_match(matchid):
     del player_info["_id"]
     match = lob.display_match(matchid)
     return render_template("match_display.html", match_data=match, player_info=player_info, name=session["name"])
-
 
 
 def league_app(name, update_info=False):
