@@ -12,7 +12,7 @@
                                                 data-target="#collapse-user" aria-expanded="true"
                                                 aria-controls="collapse-user">
                                                 <img src="/static/11.22.1/img/profileicon/{{ player_info.userData[0]['profileIconId'] }}.png"
-                                                height="32px" width="32px">
+                                                      height="32px" width="32px">
                                                 {{name}}
                                           </button>
                                     </h5>
@@ -24,7 +24,17 @@
                                                 {% for key,value in player_info.items() %}
                                                 <tr>
                                                       <td>{{key}}</td>
+                                                      {% if value is iterable and value is not string %}
+                                                      <td>
+                                                            <ul>
+                                                                  {% for k in value %}
+                                                                  <li>{{k}}</li>
+                                                                  {% endfor %}
+                                                            </ul>
+                                                      </td>
+                                                      {% else %}
                                                       <td>{{value}}</td>
+                                                      {% endif %}
                                                 </tr>
                                                 {% endfor %}
                                           </table>
@@ -55,12 +65,18 @@
                                                       <div class="card-header" id="heading-players-{{loop.index}}">
                                                             <h5 class="mb-0">
                                                                   <form action="/validuser" method="post">
-                                                                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapse-players-{{loop.index}}"
-                                                                              aria-expanded="true" aria-controls="collapse-players-{{loop.index}}">
+                                                                        <button type="button" class="btn btn-link"
+                                                                              data-toggle="collapse"
+                                                                              data-target="#collapse-players-{{loop.index}}"
+                                                                              aria-expanded="true"
+                                                                              aria-controls="collapse-players-{{loop.index}}">
                                                                               {{ player.summonerName }}
-                                                                        </button> 
-                                                                  
-                                                                        <button type="submit" class="btn btn-link" id="username" name="username" value="{{ player.summonerName }}" style="float: right;">
+                                                                        </button>
+
+                                                                        <button type="submit" class="btn btn-link"
+                                                                              id="username" name="username"
+                                                                              value="{{ player.summonerName }}"
+                                                                              style="float: right;">
                                                                               Go To Profile
                                                                         </button>
                                                                   </form>

@@ -24,8 +24,18 @@
                                           <table>
                                                 {% for key,value in player_info.items() %}
                                                 <tr>
-                                                            <td>{{key}}</td>
+                                                      <td>{{key}}</td>
+                                                      {% if value is iterable and value is not string %}
+                                                            <td>
+                                                                  <ul>
+                                                                        {% for k in value %}
+                                                                        <li>{{k}}</li>
+                                                                        {% endfor %}
+                                                                  </ul>
+                                                            </td>
+                                                      {% else %}
                                                             <td>{{value}}</td>
+                                                      {% endif %}
                                                 </tr>
                                                 {% endfor %}
                                           </table>
@@ -37,7 +47,7 @@
             <div class="col-6">
                   {% block matchlist %}<h3>Matchlist</h3>{% endblock %}
                   <form action="/matchlist/updated" id="name-form" method=["GET,POST"]>
-                        <ul style="overflow: auto;">
+                        <ul>
                               {% for match in player_info["matchIds"] %}
                               <li><a href="/match/{{ match }}">{{ match }}</a></li>
                               {% endfor %}
