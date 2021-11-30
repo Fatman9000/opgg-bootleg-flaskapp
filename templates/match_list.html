@@ -48,7 +48,7 @@
                   {% block matchlist %}<h3>Matchlist</h3>{% endblock %}
                   <form action="/matchlist/updated" id="name-form" method=["GET,POST"]>
                         <ul>
-                              {% for match in player_info["matchIds"] %}
+                              {% for match in player_info["matchIds"]|sort(reverse=true) %}
                               <li><a href="/match/{{ match }}">{{ match }}</a></li>
                               {% endfor %}
                         </ul>
