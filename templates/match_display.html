@@ -44,7 +44,8 @@
                   </div>
             </div>
             <div class="col-7">
-                  {% block match_head %}<h3>{{ match_data._id }}</h3>{% endblock %}
+                  {% block match_head %}<h3>{{ match_data._id }} {{mydate.fromtimestamp(match_data.info.gameStartTimestamp/1000).strftime('%Y-%m-%d %H:%M:%S')}} </h3>{% endblock %}
+                  
                   <div id="accordion-players">
                         <div class="card">
                               <div class="card-header" id="heading-players">

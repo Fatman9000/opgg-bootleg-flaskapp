@@ -8,6 +8,7 @@ import League_opgg_bootleg as lob
 import user
 from user import User
 from database import Database
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -43,7 +44,10 @@ def index():
 @app.route("/matchlist", methods=["GET"])
 def matchlist():
     player_info = league_app(session["name"])
-    del player_info["_id"]
+    try:
+        del player_info["_id"]
+    except:
+        pass
     session['matches'] = player_info['matchIds']
     return render_template("match_list.html", player_info=player_info, name=session["name"])
 
@@ -69,10 +73,11 @@ def selected_match(matchid):
     player_info = league_app(session["name"])
     del player_info["_id"]
     match = lob.display_match(matchid)
-    return render_template("match_display.html", match_data=match, player_info=player_info, name=session["name"])
+    return render_template("match_display.html", match_data=match, player_info=player_info, name=session["name"], mydate=datetime)
 
 
 def league_app(name, update_info=False):
     var = lob.pull_user_data(name, update_info)
     # print(var)
     return var
+
