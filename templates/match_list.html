@@ -50,29 +50,37 @@
                   <form action="/matchlist/updated" id="name-form" method=["GET,POST"]>
                         <p>Select the match you wish to view</p>
                         <button class="btn btn-success" type="submit">load new matches</button>
-                        <table id="matchtable" class="table table-striped table-bordered">
+                        </form>
+                          <table id="matchtable" class="order-column display table table-striped table-bordered">
                               <thead>
                                     <th>Match Ids</th>
                               </thead>
                               <tbody>
-                                    {% for match in player_info["matchIds"]|sort(reverse=true) %}
+                                    {% for match in player_info["matchIds"] %}
                                     <tr>
                                           <td><a href="/match/{{ match }}">{{ match }}</a></td>
                                     </tr>
                                     {% endfor %}
                               </tbody>
                         </table>
-                  </form>
+                  
             </div>
       </div>
 </div>
+
+
 {% endblock %}
-<script src="cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>
 
 <script>
+      let temp = {
+            "order": [[ 0, 'desc' ]]
+      }
       $(document).ready(function () {
-            $('#matchtable').DataTable();
+            $('#matchtable').DataTable(temp);
       });
 </script>
-
+{% endblock %}
 <!-- <div class="page-header"> -->

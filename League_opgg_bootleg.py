@@ -6,7 +6,9 @@ from pymongo import MongoClient
 import re
 from pprint import pprint
 from database import Database
-client = MongoClient("mongodb://localhost:27017")
+with open("./config/config.json") as file:
+    configsettings = json.load(file)
+client = MongoClient(f"mongodb://{configsettings['host']}:{configsettings['port']}")
 db = client.leagueData
 # serverStatusResult=db.command("serverStatus")
 
