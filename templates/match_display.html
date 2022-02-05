@@ -66,13 +66,28 @@
                                                       <div class="card-header" id="heading-players-{{loop.index}}">
                                                             <h5 class="mb-0">
                                                                   <form action="/validuser" method="post">
+                                                                        {% if player.win == true %}
+
                                                                         <button type="button" class="btn btn-link"
                                                                               data-toggle="collapse"
                                                                               data-target="#collapse-players-{{loop.index}}"
                                                                               aria-expanded="true"
-                                                                              aria-controls="collapse-players-{{loop.index}}">
+                                                                              aria-controls="collapse-players-{{loop.index}}"
+                                                                              style="color: rgb(31, 142, 205);">
                                                                               {{ player.summonerName }}
                                                                         </button>
+
+                                                                        {% else %}
+
+                                                                        <button type="button" class="btn btn-link"
+                                                                              data-toggle="collapse"
+                                                                              data-target="#collapse-players-{{loop.index}}"
+                                                                              aria-expanded="true"
+                                                                              aria-controls="collapse-players-{{loop.index}}"
+                                                                              style="color: rgb(198, 68, 62);">
+                                                                              {{ player.summonerName }}
+
+                                                                        {% endif %}
 
                                                                         <button type="submit" class="btn btn-link"
                                                                               id="username" name="username"
