@@ -1,4 +1,6 @@
 import json
+import os
+import re
 from decorators import requires_user
 from flask import (Flask, flash, redirect, render_template, request, session,
                    url_for)
@@ -9,6 +11,7 @@ import user
 from user import User
 from database import Database
 from datetime import datetime
+import requests
 
 
 app = Flask(__name__)
@@ -16,18 +19,11 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'smash like now'
 
 
-# @app.before_first_request
-# def initialize_database():
-#     Database.initialize()
-
-# class NameForm(FlaskForm):
-#     name = StringField('What is your name?', validators=[DataRequired()])
-#     submit = SubmitField('Submit')
-
-
-# class MatchForm(FlaskForm):
-#     match_id = StringField('What match do you want to view', validators=[DataRequired()])
-#     submit = SubmitField('Submit')
+@app.before_first_request
+def check_version():
+    url = "https://ddragon.leagueoflegends.com/api/versions.json"
+    r = requests.get(url)
+    newest_version = r.json()[0]
 
 @app.route("/")
 def home_page():
