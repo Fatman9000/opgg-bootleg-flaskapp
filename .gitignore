@@ -140,7 +140,7 @@ cython_debug/
 api_key.txt
 flask.sh
 mongoTesting.py
-dragontail-11.22.1
+dragontail*
 static
 config/config.json
 versions.json

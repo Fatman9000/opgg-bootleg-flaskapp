@@ -1,3 +1,5 @@
+from curses import resizeterm
+from http.client import OK
 import json
 import os
 import re
@@ -12,6 +14,8 @@ from user import User
 from database import Database
 from datetime import datetime
 import requests
+import urllib.request
+import tarfile
 
 
 app = Flask(__name__)
@@ -23,7 +27,17 @@ app.config['SECRET_KEY'] = 'smash like now'
 def check_version():
     url = "https://ddragon.leagueoflegends.com/api/versions.json"
     r = requests.get(url)
-    newest_version = r.json()[0]
+    reg_compile = re.compile(".*dragontail-.*")
+    directories = os.listdir()
+    results = list(filter(reg_compile.match, directories))
+    if f"dragontail-{r.json()[0]}" not in results:
+        urllib.request.urlretrieve(f"https://ddragon.leagueoflegends.com/cdn/dragontail-{r.json()[0]}.tgz", f"dragontail-{r.json()[0]}.tgz")
+        temp_tar = tarfile.open(f"dragontail-{r.json()[0]}.tgz")
+        os.mkdir(f"dragontail-{r.json()[0]}")
+        temp_tar.extractall(f"dragontail-{r.json()[0]}")
+        temp_tar.close()
+        os.remove(f"dragontail-{r.json()[0]}.tgz")
+
 
 @app.route("/")
 def home_page():
@@ -37,6 +51,7 @@ def index():
     return redirect("/matchlist")
     # return render_template('index.html')
 
+
 @app.route("/matchlist", methods=["GET"])
 def matchlist():
     player_info = league_app(session["name"])
@@ -46,6 +61,7 @@ def matchlist():
         pass
     session['matches'] = player_info['matchIds']
     return render_template("match_list.html", player_info=player_info, name=session["name"])
+
 
 @app.route("/matchlist/updated", methods=['GET'])
 def update_matchlist():
@@ -62,7 +78,6 @@ def update_matchlist():
 #     return render_template('match_list.html', form=match_form, matches=session["matches"])
 
 
-
 @app.route('/match/<matchid>', methods=['GET', 'POST'])
 @requires_user
 def selected_match(matchid):
@@ -76,4 +91,3 @@ def league_app(name, update_info=False):
     var = lob.pull_user_data(name, update_info)
     # print(var)
     return var
-
