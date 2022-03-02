@@ -1,5 +1,3 @@
-from curses import resizeterm
-from http.client import OK
 import json
 import os
 import re
@@ -27,16 +25,17 @@ app.config['SECRET_KEY'] = 'smash like now'
 def check_version():
     url = "https://ddragon.leagueoflegends.com/api/versions.json"
     r = requests.get(url)
-    reg_compile = re.compile(".*dragontail-.*")
-    directories = os.listdir()
-    results = list(filter(reg_compile.match, directories))
-    if f"dragontail-{r.json()[0]}" not in results:
+    directories = os.listdir("./static/")
+    session["current_version"] = r.json()[0]
+    if r.json()[0] not in directories:
         urllib.request.urlretrieve(f"https://ddragon.leagueoflegends.com/cdn/dragontail-{r.json()[0]}.tgz", f"dragontail-{r.json()[0]}.tgz")
         temp_tar = tarfile.open(f"dragontail-{r.json()[0]}.tgz")
-        os.mkdir(f"dragontail-{r.json()[0]}")
-        temp_tar.extractall(f"dragontail-{r.json()[0]}")
+        for folder in directories:
+            os.rmdir(folder)
+        temp_tar.extractall(f"static")
         temp_tar.close()
         os.remove(f"dragontail-{r.json()[0]}.tgz")
+        
 
 
 @app.route("/")
@@ -84,7 +83,7 @@ def selected_match(matchid):
     player_info = league_app(session["name"])
     del player_info["_id"]
     match = lob.display_match(matchid)
-    return render_template("match_display.html", match_data=match, player_info=player_info, name=session["name"], mydate=datetime)
+    return render_template("match_display.html", match_data=match, player_info=player_info, name=session["name"], mydate=datetime,  current_version=session["current_version"])
 
 
 def league_app(name, update_info=False):

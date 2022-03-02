@@ -11,7 +11,7 @@
                                           <button class="btn btn-link" data-toggle="collapse"
                                                 data-target="#collapse-user" aria-expanded="true"
                                                 aria-controls="collapse-user">
-                                                <img src="/static/11.22.1/img/profileicon/{{ player_info.userData[0]['profileIconId'] }}.png"
+                                                <img src="/static/{{current_version}}/img/profileicon/{{ player_info.userData[0]['profileIconId'] }}.png"
                                                       height="32px" width="32px">
                                                 {{name}}
                                           </button>
@@ -70,7 +70,7 @@
                                                                   <form action="/validuser" method="post">
                                                                         {{ player.champLevel }}
                                                                         <a href="https://leagueoflegends.fandom.com/wiki/{{ player.championName }}/LoL"><img
-                                                                              src="/static/11.22.1/img/champion/{{ player.championName }}.png"
+                                                                              src="/static/{{current_version}}/img/champion/{{ player.championName }}.png"
                                                                               height="32px" width="32px"></a> 
                                                                         {% if player.win == true %}
 
@@ -98,7 +98,7 @@
                                                                               {% endif %}
                                                                               {% for x in range(7) %}
                                                                               {% set itemid = "item" + x|string %}
-                                                                              <img src="/static/11.22.1/img/item/{{ player[itemid] }}.png"
+                                                                              <img src="/static/{{current_version}}/img/item/{{ player[itemid] }}.png"
                                                                                     height="32px" width="32px">
                                                                               {% endfor %}      
 
