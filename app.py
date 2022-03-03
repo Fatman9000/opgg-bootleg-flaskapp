@@ -59,13 +59,13 @@ def matchlist():
     except:
         pass
     session['matches'] = player_info['matchIds']
-    return render_template("match_list.html", player_info=player_info, name=session["name"])
+    return render_template("match_list.html", player_info=player_info, name=session["name"], current_version=session["current_version"])
 
 
 @app.route("/matchlist/updated", methods=['GET'])
 def update_matchlist():
     player_info = league_app(session["name"], True)
-    return render_template("match_list.html", player_info=player_info, name=session["name"])
+    return render_template("match_list.html", player_info=player_info, name=session["name"], current_version=session["current_version"])
 
 # @app.route('/match', methods=['GET', 'POST'])
 # def match():
