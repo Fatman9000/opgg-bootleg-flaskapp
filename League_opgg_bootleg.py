@@ -6,6 +6,8 @@ from pymongo import MongoClient
 import re
 from pprint import pprint
 from database import Database
+
+
 with open("./config/config.json") as file:
     configsettings = json.load(file)
 client = MongoClient(f"mongodb://{configsettings['host']}:{configsettings['port']}")
@@ -128,7 +130,16 @@ def display_match(match_id=None, league_name=None):
     if existing_match_info:
         return existing_match_info
     
-    
+def get_item_info(match_id):
+    existing_match_info = db.matchData.find_one({"_id": match_id})
+    item_info = {}
+    # for player in existing_match_info["info"]["participants"]:
+    #     for item_index in range(7):
+            # "/static/12.5.1/data/en_US/item.json"
+            # player[f"item{item_index}"]
+            
+            
+
 
 def return_match_ids(league_name=None):
     pass
