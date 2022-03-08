@@ -25,6 +25,7 @@
                               <div id="collapse-user" class="collapse show" aria-labelledby="heading-user"
                                     data-parent="#accordion-user">
                                     <div class="card-body">
+                                          {% set matchIds=player_info.pop("matchIds") %}
                                           <table>
                                                 {% for key,value in player_info.items() %}
                                                 <tr>
@@ -57,7 +58,7 @@
                               <th>Match Ids</th>
                         </thead>
                         <tbody>
-                              {% for match in player_info["matchIds"] %}
+                              {% for match in matchIds %}
                               <tr>
                                     <td><a href="/match/{{ match }}">{{ match }}</a></td>
                               </tr>

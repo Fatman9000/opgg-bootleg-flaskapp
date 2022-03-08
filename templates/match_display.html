@@ -20,6 +20,7 @@
                               <div id="collapse-user" class="collapse show" aria-labelledby="heading-user"
                                     data-parent="#accordion-user">
                                     <div class="card-body">
+                                          {% set _dummy=player_info.pop("matchIds") %}
                                           <table>
                                                 {% for key,value in player_info.items() %}
                                                 <tr>
@@ -82,8 +83,7 @@
                                                                               aria-controls="collapse-players-{{loop.index}}"
                                                                               style="color: rgb(31, 142, 205);">
                                                                               {{ player.summonerName }}
-                                                                              {{ player.kills }}/{{ player.deaths
-                                                                              }}/{{player.assists }}
+                                                                              {{ player.kills }}/{{ player.deaths}}/{{player.assists }}
                                                                         </button>
 
                                                                         {% else %}
@@ -95,16 +95,17 @@
                                                                               aria-controls="collapse-players-{{loop.index}}"
                                                                               style="color: rgb(198, 68, 62);">
                                                                               {{ player.summonerName }}
-                                                                              {{ player.kills }}/{{ player.deaths
-                                                                              }}/{{player.assists }}
+                                                                              {{ player.kills }}/{{ player.deaths}}/{{player.assists }}
                                                                         </button>
                                                                         {% endif %}
                                                                         {% for x in range(7) %}
-                                                                        {% set itemid = "item" + x|string %}
-                                                                        <img src="/static/{{current_version}}/img/item/{{ player[itemid] }}.png"
-                                                                              height="32px" width="32px">
+                                                                              {% set itemid = "item" + x|string %}
+                                                                              {% if player[itemid] == 0 %}
+                                                                              
+                                                                              {% else %}
+                                                                                    <img src="/static/{{current_version}}/img/item/{{ player[itemid] }}.png" data-bs-toggle="tooltip" title="test" height="32px" width="32px">
+                                                                              {% endif %}
                                                                         {% endfor %}
-
 
                                                                         <button type="submit" class="btn btn-link"
                                                                               id="username" name="username"
