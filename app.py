@@ -27,6 +27,7 @@ def check_version():
     r = requests.get(url)
     directories = os.listdir("./static/")
     session["current_version"] = r.json()[0]
+    
     if r.json()[0] not in directories:
         urllib.request.urlretrieve(f"https://ddragon.leagueoflegends.com/cdn/dragontail-{r.json()[0]}.tgz", f"dragontail-{r.json()[0]}.tgz")
         temp_tar = tarfile.open(f"dragontail-{r.json()[0]}.tgz")
@@ -35,6 +36,8 @@ def check_version():
         temp_tar.extractall(f"static")
         temp_tar.close()
         os.remove(f"dragontail-{r.json()[0]}.tgz")
+        lob.db_patch_data(session["current_version"])
+
         
 
 

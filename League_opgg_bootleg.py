@@ -129,7 +129,23 @@ def display_match(match_id=None, league_name=None):
         existing_match_info = db.matchData.find_one({"_id": match_id})
     if existing_match_info:
         return existing_match_info
-    
+
+def db_patch_data(patch):
+    db.patchData.delete_many({})
+    db.runeData.delete_many({})
+    with open(f"./static/{patch}/data/en_US/item.json") as f:
+        data = json.load(f)
+        db.patchData.insert_one(data)
+    with open(f"./static/{patch}/data/en_US/runesReforged.json") as f:
+        data = json.load(f)
+        db.runeData.insert_many(data)
+    with open(f"./static/{patch}/data/en_US/champion.json") as f:
+        data = json.load(f)
+        db.patchData.insert_one(data)
+    with open(f"./static/{patch}/data/en_US/summoner.json") as f:
+        data = json.load(f)
+        db.patchData.insert_one(data)
+
 def get_item_info(match_id):
     existing_match_info = db.matchData.find_one({"_id": match_id})
     item_info = {}
