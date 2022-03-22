@@ -10,7 +10,8 @@ from database import Database
 
 with open("./config/config.json") as file:
     configsettings = json.load(file)
-client = MongoClient(f"mongodb://{configsettings['host']}:{configsettings['port']}")
+client = MongoClient(
+    f"mongodb://{configsettings['host']}:{configsettings['port']}")
 db = client.leagueData
 # serverStatusResult=db.command("serverStatus")
 
@@ -96,10 +97,11 @@ def pull_user_data(league_name, update_info):
 
     }
     if update_info == True:
-        db.playerData.update_one({'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)}, {'$set':{
+        db.playerData.update_one({'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)}, {'$set': {
                                  'userData': player_info['userData'], 'summonerEntries': player_info['summonerEntries']}})
         for match_id in player_info['matchIds']:
-            db.playerData.update_one({'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)}, {'$addToSet': {'matchIds': match_id}})
+            db.playerData.update_one({'name': re.compile(
+                '^' + re.escape(league_name) + '$', re.IGNORECASE)}, {'$addToSet': {'matchIds': match_id}})
     else:
         db.playerData.insert_one(player_info)
     client.close()
@@ -114,8 +116,8 @@ def display_match(match_id=None, league_name=None):
         exit()
     headers = {"Content-Type": "application/json",
                "Application-Type": "application/json", "X-Riot-Token": api_key}
-    
-    existing_match_info = db.matchData.find_one({"_id" : match_id})
+
+    existing_match_info = db.matchData.find_one({"_id": match_id})
     if existing_match_info:
         return existing_match_info
     else:
@@ -129,6 +131,7 @@ def display_match(match_id=None, league_name=None):
         existing_match_info = db.matchData.find_one({"_id": match_id})
     if existing_match_info:
         return existing_match_info
+
 
 def db_patch_data(patch):
     db.patchData.delete_many({})
@@ -146,15 +149,11 @@ def db_patch_data(patch):
         data = json.load(f)
         db.patchData.insert_one(data)
 
+
 def get_item_info(match_id):
-    existing_match_info = db.matchData.find_one({"_id": match_id})
-    item_info = {}
-    # for player in existing_match_info["info"]["participants"]:
-    #     for item_index in range(7):
-            # "/static/12.5.1/data/en_US/item.json"
-            # player[f"item{item_index}"]
-            
-            
+    existing_match_info = db.matchData.find_one({"_id": match_id}, {"info.participants.item0": 1, "info.participants.item1": 1, "info.participants.item2": 1,
+                                                "info.participants.item3": 1, "info.participants.item4": 1, "info.participants.item5": 1, "info.participants.item6": 1})
+    print(existing_match_info)
 
 
 def return_match_ids(league_name=None):

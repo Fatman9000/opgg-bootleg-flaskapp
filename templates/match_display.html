@@ -103,7 +103,7 @@
                                                                               {% if player[itemid] == 0 %}
                                                                               
                                                                               {% else %}
-                                                                                    <img src="/static/{{current_version}}/img/item/{{ player[itemid] }}.png" data-bs-toggle="tooltip" title="{{test}}" height="32px" width="32px">
+                                                                                    <img src="/static/{{current_version}}/img/item/{{ player[itemid] }}.png" data-bs-toggle="tooltip" id="{{ player[itemid] }}" height="32px" width="32px">
                                                                               {% endif %}
                                                                         {% endfor %}
 
@@ -168,3 +168,8 @@
       </div>
 </div>
 {% endblock %}
+<!-- {% block script %}
+<script>
+
+</script>
+{% endblock %} -->
