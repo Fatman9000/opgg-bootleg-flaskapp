@@ -100,10 +100,8 @@
                                                                         {% endif %}
                                                                         {% for x in range(7) %}
                                                                               {% set itemid = "item" + x|string %}
-                                                                              {% if player[itemid] == 0 %}
-                                                                              
-                                                                              {% else %}
-                                                                                    <img src="/static/{{current_version}}/img/item/{{ player[itemid] }}.png" data-bs-toggle="tooltip" id="{{ player[itemid] }}" height="32px" width="32px">
+                                                                              {% if player[itemid] != 0 %}
+                                                                                    <img src="/static/{{current_version}}/img/item/{{ player[itemid] }}.png" data-bs-toggle="tooltip" id="{{ player[itemid] }}" height="32px" width="32px" title="{{ item_info[player[itemid]] }}">
                                                                               {% endif %}
                                                                         {% endfor %}
 

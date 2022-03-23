@@ -86,8 +86,9 @@ def selected_match(matchid):
     player_info = league_app(session["name"])
     del player_info["_id"]
     match = lob.display_match(matchid)
-    # lob.get_item_info(matchid)
-    return render_template("match_display.html", match_data=match, player_info=player_info, name=session["name"], mydate=datetime,  current_version=session["current_version"])
+    item_info = lob.get_item_info(matchid)
+    print()
+    return render_template("match_display.html", match_data=match, player_info=player_info, name=session["name"], mydate=datetime,  current_version=session["current_version"], item_info=item_info)
 
 
 def league_app(name, update_info=False):

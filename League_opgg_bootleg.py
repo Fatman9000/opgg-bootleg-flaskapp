@@ -150,20 +150,23 @@ def db_patch_data(patch):
         db.patchData.insert_one(data)
 
 
-# def get_item_info(match_id):
-#     existing_match_info = db.matchData.find_one({"_id": match_id}, {"info.participants.item0": 1, "info.participants.item1": 1, "info.participants.item2": 1,
-#                                                 "info.participants.item3": 1, "info.participants.item4": 1, "info.participants.item5": 1, "info.participants.item6": 1})
-#     player_num = 0
-#     for player_items in existing_match_info["info"]["participants"]:
-#         # print(player_items)
+def get_item_info(match_id):
+    existing_match_info = db.matchData.find_one({"_id": match_id}, {"info.participants.item0": 1, "info.participants.item1": 1, "info.participants.item2": 1,
+                                                "info.participants.item3": 1, "info.participants.item4": 1, "info.participants.item5": 1, "info.participants.item6": 1})
+    player_num = 0
+    item_info = {}
+    for player_items in existing_match_info["info"]["participants"]:
 
-#         for item in player_items:
-#             item_id = existing_match_info["info"]["participants"][player_num][item]
-#             item_desc = db.patchData.find_one({"type" : "item"}, {f"data.{item_id}.plaintext" : 1})
-#             print(item_desc)
-#             # db.patchData.find(existing_match_info["info"]["participants"][player_num][item])
-#         player_num+=1    
-        
+        for item in player_items:
+            item_id = existing_match_info["info"]["participants"][player_num][item]
+            item_desc =(db.patchData.find_one({"type" : "item"}, {f"data.{item_id}.plaintext" : 1, "name" : 1, "_id" : 0}))
+            
+            if item_id != 0 and item_desc['data'][f"{item_id}"]['plaintext'] != '':
+                item_info[item_id] = item_desc['data'][f"{item_id}"]['plaintext']
+            
+        player_num+=1  
+    return item_info 
+    
 
 
 def return_match_ids(league_name=None):
