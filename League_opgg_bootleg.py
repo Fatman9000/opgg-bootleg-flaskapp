@@ -159,10 +159,10 @@ def get_item_info(match_id):
 
         for item in player_items:
             item_id = existing_match_info["info"]["participants"][player_num][item]
-            item_desc =(db.patchData.find_one({"type" : "item"}, {f"data.{item_id}.plaintext" : 1, "name" : 1, "_id" : 0}))
+            item_desc = db.patchData.find_one({"type" : "item"}, {f"data.{item_id}.plaintext" : 1, f"data.{item_id}.name" : 1, "_id" : 0})
             
             if item_id != 0 and item_desc['data'][f"{item_id}"]['plaintext'] != '':
-                item_info[item_id] = item_desc['data'][f"{item_id}"]['plaintext']
+                item_info[item_id] = item_desc['data'][f"{item_id}"]['name'], item_desc['data'][f"{item_id}"]['plaintext']
             
         player_num+=1  
     return item_info 
