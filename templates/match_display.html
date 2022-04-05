@@ -20,25 +20,27 @@
                               <div id="collapse-user" class="collapse show" aria-labelledby="heading-user"
                                     data-parent="#accordion-user">
                                     <div class="card-body">
-                                          {% set _dummy=player_info.pop("matchIds") %}
-                                          <table>
-                                                {% for key,value in player_info.items() %}
-                                                <tr>
-                                                      <td>{{key}}</td>
-                                                      {% if value is iterable and value is not string %}
-                                                      <td>
-                                                            <ul style="width: 600px;">
+                                          <div class="card-text">
+                                                {% set _dummy=player_info.pop("matchIds") %}
+                                                <table>
+                                                      {% for key,value in player_info.items() %}
+                                                      <tr>
+                                                            <td>{{key}}</td>
+                                                            {% if value is iterable and value is not string %}
+                                                            <td class="card-text">
                                                                   {% for k in value %}
-                                                                  {{k}},
+                                                                  {{k}}
                                                                   {% endfor %}
-                                                            </ul>
-                                                      </td>
-                                                      {% else %}
-                                                      <td>{{value}}</td>
-                                                      {% endif %}
-                                                </tr>
-                                                {% endfor %}
-                                          </table>
+                                                            </td>
+                                                            {% else %}
+                                                            <td class="card-text">
+                                                                  {{value}}
+                                                            </td>
+                                                            {% endif %}
+                                                      </tr>
+                                                      {% endfor %}
+                                                </table>
+                                          </div>
                                     </div>
                               </div>
                         </div>
@@ -69,11 +71,10 @@
                                                       <div class="card-header" id="heading-players-{{loop.index}}">
                                                             <h5 class="mb-0">
                                                                   <form action="/validuser" method="post">
+                                                                        <a href="https://leagueoflegends.fandom.com/wiki/{{ player.championName }}/LoL">
+                                                                              <img src="/static/{{current_version}}/img/champion/{{ player.championName }}.png" height="32px" width="32px">
+                                                                        </a>
                                                                         {{ player.champLevel }}
-                                                                        <a
-                                                                              href="https://leagueoflegends.fandom.com/wiki/{{ player.championName }}/LoL"><img
-                                                                                    src="/static/{{current_version}}/img/champion/{{ player.championName }}.png"
-                                                                                    height="32px" width="32px"></a>
                                                                         {% if player.win == true %}
 
                                                                         <button type="button" class="btn btn-link"
@@ -101,7 +102,11 @@
                                                                         {% for x in range(7) %}
                                                                               {% set itemid = "item" + x|string %}
                                                                               {% if player[itemid] != 0 %}
-                                                                                    <img src="/static/{{current_version}}/img/item/{{ player[itemid] }}.png" data-bs-toggle="tooltip" id="{{ player[itemid] }}" height="32px" width="32px" title="{{ item_info[player[itemid]] }}">
+                                                                                    <a href="https://leagueoflegends.fandom.com/wiki/{{ item_info[player[itemid]][0] }}">
+                                                                                          <img src="/static/{{current_version}}/img/item/{{ player[itemid] }}.png" data-bs-toggle="tooltip"
+                                                                                                id="{{ player[itemid] }}" height="32px" width="32px"
+                                                                                                title="{{ item_info[player[itemid]][0] }}{% if item_info[player[itemid]][1] != '' %} : {{item_info[player[itemid]][1]}} {% endif %}">    
+                                                                                    </a>
                                                                               {% endif %}
                                                                         {% endfor %}
 

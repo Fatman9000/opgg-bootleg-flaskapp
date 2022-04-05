@@ -16,17 +16,6 @@ db = client.leagueData
 # serverStatusResult=db.command("serverStatus")
 
 
-def write_to_file(file_name, inputdata):
-    """Writes all given input data to a file dumped as json"""
-    with open(file_name, "a") as f:
-        json.dump(inputdata, f)
-
-
-def write_to_db(inputdata):
-    """creates a object in a mongo database"""
-    db.leagueData.insert_one()
-
-
 def pull_user_data(league_name, update_info):
     client = MongoClient("mongodb://localhost:27017")
     db = client.leagueData
@@ -163,7 +152,8 @@ def get_item_info(match_id):
             
             if item_id != 0 and item_desc['data'][f"{item_id}"]['plaintext'] != '':
                 item_info[item_id] = item_desc['data'][f"{item_id}"]['name'], item_desc['data'][f"{item_id}"]['plaintext']
-            
+            elif item_id != 0 and item_desc['data'][f"{item_id}"]['name'] != '':
+                item_info[item_id] = item_desc['data'][f"{item_id}"]['name'], ''
         player_num+=1  
     return item_info 
     

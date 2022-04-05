@@ -25,25 +25,29 @@
                               <div id="collapse-user" class="collapse show" aria-labelledby="heading-user"
                                     data-parent="#accordion-user">
                                     <div class="card-body">
+                                          
                                           {% set matchIds=player_info.pop("matchIds") %}
                                           <table>
                                                 {% for key,value in player_info.items() %}
                                                 <tr>
                                                       <td>{{key}}</td>
                                                       {% if value is iterable and value is not string %}
-                                                      <td>
+                                                      <td class="card-text">
                                                             {% for k in value %}
                                                             {{k}},
                                                             {% endfor %}
                                                       </td>
                                                       {% else %}
-                                                      <td>{{value}}</td>
+                                                      <td class="card-text">
+                                                            {{value}}
+                                                      </td>
                                                       {% endif %}
                                                 </tr>
                                                 {% endfor %}
                                           </table>
                                     </div>
                               </div>
+                        </div>
                         </div>
                   </div>
             </div>
