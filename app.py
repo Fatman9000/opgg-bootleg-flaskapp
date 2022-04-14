@@ -1,13 +1,10 @@
-import json
 import os
-import re
 from decorators import requires_user
 from flask import (Flask, flash, redirect, render_template, request, session,
                    url_for)
-
+import shutil
 from pymongo import MongoClient
 import League_opgg_bootleg as lob
-import user
 from user import User
 from database import Database
 from datetime import datetime
@@ -31,16 +28,14 @@ def check_version():
     if r.json()[0] not in directories:
         urllib.request.urlretrieve(f"https://ddragon.leagueoflegends.com/cdn/dragontail-{r.json()[0]}.tgz", f"dragontail-{r.json()[0]}.tgz")
         temp_tar = tarfile.open(f"dragontail-{r.json()[0]}.tgz")
-        for folder in directories:
-            os.rmdir(folder)
-        temp_tar.extractall(f"static")
+        shutil.rmtree("./static/")
+        os.mkdir("./static")
+        temp_tar.extractall(f"./static", numeric_owner=True)
         temp_tar.close()
         os.remove(f"dragontail-{r.json()[0]}.tgz")
         lob.db_patch_data(session["current_version"])
 
         
-
-
 @app.route("/")
 def home_page():
     return render_template("index.html")
@@ -55,6 +50,7 @@ def index():
 
 
 @app.route("/matchlist", methods=["GET"])
+@requires_user
 def matchlist():
     player_info = league_app(session["name"])
     try:
@@ -66,6 +62,7 @@ def matchlist():
 
 
 @app.route("/matchlist/updated", methods=['GET'])
+@requires_user
 def update_matchlist():
     player_info = league_app(session["name"], True)
     return render_template("match_list.html", player_info=player_info, name=session["name"], current_version=session["current_version"])

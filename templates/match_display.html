@@ -21,25 +21,21 @@
                                     data-parent="#accordion-user">
                                     <div class="card-body">
                                           <div class="card-text">
-                                                {% set _dummy=player_info.pop("matchIds") %}
-                                                <table>
-                                                      {% for key,value in player_info.items() %}
-                                                      <tr>
-                                                            <td>{{key}}</td>
-                                                            {% if value is iterable and value is not string %}
-                                                            <td class="card-text">
-                                                                  {% for k in value %}
-                                                                  {{k}}
-                                                                  {% endfor %}
-                                                            </td>
-                                                            {% else %}
-                                                            <td class="card-text">
-                                                                  {{value}}
-                                                            </td>
-                                                            {% endif %}
-                                                      </tr>
-                                                      {% endfor %}
-                                                </table>
+                                          {% set _dummy=player_info.pop("matchIds") %}
+                                          <table>
+                                                <tr>
+                                                      <td>Name</td>
+                                                      <td>{{player_info["name"]}}</td>
+                                                </tr>
+                                                <tr>
+                                                      <td>userData</td>
+                                                      <td>{{player_info["userData"][0]}}</td>
+                                                </tr>
+                                                <tr>
+                                                      <td>summonerEntries</td>
+                                                      <td>{{player_info["summonerEntries"][0]}}</td>
+                                                </tr>
+                                          </table>
                                           </div>
                                     </div>
                               </div>

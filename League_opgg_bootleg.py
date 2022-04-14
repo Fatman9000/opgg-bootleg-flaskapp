@@ -7,8 +7,8 @@ import re
 
 with open("./config/config.json") as file:
     configsettings = json.load(file)
-client = MongoClient(
-    f"mongodb://{configsettings['host']}:{configsettings['port']}")
+
+client = MongoClient(f"mongodb://{configsettings['host']}:{configsettings['port']}")
 db = client.leagueData
 # serverStatusResult=db.command("serverStatus")
 try:
@@ -16,19 +16,21 @@ try:
 except FileNotFoundError:
     print("No api key file found")
     exit()
-# current_date = datetime.today().strftime("%Y-%m-%d_%H-%M")
+
 headers = {"Content-Type": "application/json",
             "Application-Type": "application/json", "X-Riot-Token": api_key}
 
 
 def pull_user_data(league_name, update_info):
-    """
+    """Pulls user information from the league of legends api
+
     pull_user_data sets the mongo database client and queries the riot games api
     in order to build and return a dictionary of player information while also updating
     stored info in the playerData collection.
+
+    :param league_name (str): League of Legends username of the user to be returned
+    :param update_info (bool): If update_info is true the pull_user_data function gets new information rather than info currently in the database
     """
-    client = MongoClient("mongodb://localhost:27017")
-    db = client.leagueData
     existing_player_info = db.playerData
     player_in_database = existing_player_info.find_one(
         {'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)})
@@ -36,11 +38,11 @@ def pull_user_data(league_name, update_info):
     if update_info == False:
         if player_in_database:
             return player_in_database
-        # print(player_in_database)
 
     user_data = get_summoner(league_name)
     summoner_entries = get_summoner_entries(user_data)
     match_history = get_summoner_history(user_data)
+    
 
     try:
         for match_id in player_in_database["matchIds"]:
@@ -57,16 +59,17 @@ def pull_user_data(league_name, update_info):
     }
 
     if update_info == True:
-        update_info(player_info)
+        update_player_info(player_info, league_name)
     else:
         db.playerData.insert_one(player_info)
-    client.close()
     return player_info
-
+    
 
 def get_summoner(league_name):
     """
     Takes the summoner's name to query the riot games api for basic account info.
+    
+    :param league_name (str): League of Legends username of the user to be returned
     """
     url = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/{}".format(
         league_name)
@@ -83,10 +86,12 @@ def get_summoner_entries(user_data):
     """
     Takes the account information returned by get_summoner to query the riot games api for
     the user's, leagueId, summonerId, wins and losses, and rank info.
+    
+    :param user_data (): 
     """
     try:
         summoner_entries = r.get("https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/{}".format(
-            user_data.json()["id"]), headers=headers).json()  # end_index, start_index),
+            user_data.json()["id"]), headers=headers).json()
     except Exception as e:
         print("failed to pull user data: error: {}".format(e))
     return summoner_entries
@@ -101,7 +106,7 @@ def get_summoner_history(user_data):
     return match_history
 
 
-def update_info(player_info):
+def update_player_info(player_info, league_name):
     """
     Updates existing player info in the database with provided player info
     """
@@ -125,6 +130,7 @@ def display_match(match_id=None, league_name=None):
                "Application-Type": "application/json", "X-Riot-Token": api_key}
 
     existing_match_info = db.matchData.find_one({"_id": match_id})
+
     if existing_match_info:
         return existing_match_info
     else:
@@ -136,6 +142,7 @@ def display_match(match_id=None, league_name=None):
         match_display["_id"] = match_id
         db.matchData.insert_one(match_display)
         existing_match_info = db.matchData.find_one({"_id": match_id})
+
     if existing_match_info:
         return existing_match_info
 
