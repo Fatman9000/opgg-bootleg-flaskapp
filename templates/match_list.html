@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "user.html" %}
 {% block head %}
 <link rel="stylesheet" href="http://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap4.min.css">
@@ -7,44 +7,10 @@
 <div class="container-fluid name-form">
       <div class="row">
             <div class="col-6">
-                  {% block title %}<h3>User</h3>{% endblock title %}
-                  <div id="accordion-user">
-                        <div class="card">
-                              <div class="card-header" id="heading-user">
-                                    <h5 class="mb-0">
-                                          <button class="btn btn-link" data-toggle="collapse"
-                                                data-target="#collapse-user" aria-expanded="true"
-                                                aria-controls="collapse-user">
-                                                <!-- {{player_info.userData[0]["profileIconId"]}} -->
-                                                <img src="/static/{{current_version}}/img/profileicon/{{ player_info.userData[0]['profileIconId'] }}.png"
-                                                      height="32px" width="32px">
-                                                {{name}}
-                                          </button>
-                                    </h5>
-                              </div>
-                              <div id="collapse-user" class="collapse show" aria-labelledby="heading-user"
-                                    data-parent="#accordion-user">
-                                    <div class="card-body">
-                                          {% set matchIds=player_info.pop("matchIds") %}
-                                          <table>
-                                                <tr>
-                                                      <td>Name</td>
-                                                      <td>{{player_info["name"]}}</td>
-                                                </tr>
-                                                <tr>
-                                                      <td>userData</td>
-                                                      <td>{{player_info["userData"][0]}}</td>
-                                                </tr>
-                                                <tr>
-                                                      <td>summonerEntries</td>
-                                                      <td>{{player_info["summonerEntries"][0]}}</td>
-                                                </tr>
-                                          </table>
-                                    </div>
-                              </div>
-                        </div>
-                  </div>
+                  {{ super()}}
+                  {% set matchIds=player_info.pop("matchIds") %}
             </div>
+
             <div class="col-6">
                   {% block matchlist %}<h3>Matchlist</h3>{% endblock %}
                   <form action="/matchlist/updated" id="name-form" method=["GET,POST"]>

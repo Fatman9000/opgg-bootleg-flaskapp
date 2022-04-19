@@ -1,48 +1,13 @@
-{% extends "base.html" %}
+{% extends "user.html" %}
+
 {% block content %}
 <div class="container-fluid">
       <div class="row">
-            <div class="col-5">
-                  {% block title %} <h3>User</h3> {% endblock %}
-                  <div id="accordion-user">
-                        <div class="card">
-                              <div class="card-header" id="heading-user">
-                                    <h5 class="mb-0">
-                                          <button class="btn btn-link" data-toggle="collapse"
-                                                data-target="#collapse-user" aria-expanded="true"
-                                                aria-controls="collapse-user">
-                                                <img src="/static/{{current_version}}/img/profileicon/{{ player_info.userData[0]['profileIconId'] }}.png"
-                                                      height="32px" width="32px">
-                                                {{name}}
-                                          </button>
-                                    </h5>
-                              </div>
-                              <div id="collapse-user" class="collapse show" aria-labelledby="heading-user"
-                                    data-parent="#accordion-user">
-                                    <div class="card-body">
-                                          <div class="card-text">
-                                          {% set _dummy=player_info.pop("matchIds") %}
-                                          <table>
-                                                <tr>
-                                                      <td>Name</td>
-                                                      <td>{{player_info["name"]}}</td>
-                                                </tr>
-                                                <tr>
-                                                      <td>userData</td>
-                                                      <td>{{player_info["userData"][0]}}</td>
-                                                </tr>
-                                                <tr>
-                                                      <td>summonerEntries</td>
-                                                      <td>{{player_info["summonerEntries"][0]}}</td>
-                                                </tr>
-                                          </table>
-                                          </div>
-                                    </div>
-                              </div>
-                        </div>
-                  </div>
+            <div class="col-6">
+                  {{ super() }}
             </div>
-            <div class="col-7">
+
+            <div class="col-6">
                   {% block match_head %}<h3>{{ match_data._id }}
                         {{mydate.fromtimestamp(match_data.info.gameStartTimestamp/1000).strftime('%Y-%m-%d %H:%M:%S')}}
                   </h3>{% endblock %}
@@ -67,8 +32,10 @@
                                                       <div class="card-header" id="heading-players-{{loop.index}}">
                                                             <h5 class="mb-0">
                                                                   <form action="/validuser" method="post">
-                                                                        <a href="https://leagueoflegends.fandom.com/wiki/{{ player.championName }}/LoL">
-                                                                              <img src="/static/{{current_version}}/img/champion/{{ player.championName }}.png" height="32px" width="32px">
+                                                                        <a
+                                                                              href="https://leagueoflegends.fandom.com/wiki/{{ player.championName }}/LoL">
+                                                                              <img src="/static/{{current_version}}/img/champion/{{ player.championName }}.png"
+                                                                                    height="32px" width="32px">
                                                                         </a>
                                                                         {{ player.champLevel }}
                                                                         {% if player.win == true %}
@@ -80,7 +47,9 @@
                                                                               aria-controls="collapse-players-{{loop.index}}"
                                                                               style="color: rgb(31, 142, 205);">
                                                                               {{ player.summonerName }}
-                                                                              {{ player.kills }}/{{ player.deaths}}/{{player.assists }}
+                                                                              {{ player.kills }}/{{
+                                                                              player.deaths}}/{{player.assists
+                                                                              }}
                                                                         </button>
 
                                                                         {% else %}
@@ -92,18 +61,23 @@
                                                                               aria-controls="collapse-players-{{loop.index}}"
                                                                               style="color: rgb(198, 68, 62);">
                                                                               {{ player.summonerName }}
-                                                                              {{ player.kills }}/{{ player.deaths}}/{{player.assists }}
+                                                                              {{ player.kills }}/{{
+                                                                              player.deaths}}/{{player.assists
+                                                                              }}
                                                                         </button>
                                                                         {% endif %}
                                                                         {% for x in range(7) %}
-                                                                              {% set itemid = "item" + x|string %}
-                                                                              {% if player[itemid] != 0 %}
-                                                                                    <a href="https://leagueoflegends.fandom.com/wiki/{{ item_info[player[itemid]][0] }}">
-                                                                                          <img src="/static/{{current_version}}/img/item/{{ player[itemid] }}.png" data-bs-toggle="tooltip"
-                                                                                                id="{{ player[itemid] }}" height="32px" width="32px"
-                                                                                                title="{{ item_info[player[itemid]][0] }}{% if item_info[player[itemid]][1] != '' %} : {{item_info[player[itemid]][1]}} {% endif %}">    
-                                                                                    </a>
-                                                                              {% endif %}
+                                                                        {% set itemid = "item" + x|string %}
+                                                                        {% if player[itemid] != 0 %}
+                                                                        <a
+                                                                              href="https://leagueoflegends.fandom.com/wiki/{{ item_info[player[itemid]][0] }}">
+                                                                              <img src="/static/{{current_version}}/img/item/{{ player[itemid] }}.png"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    id="{{ player[itemid] }}"
+                                                                                    height="32px" width="32px"
+                                                                                    title="{{ item_info[player[itemid]][0] }}{% if item_info[player[itemid]][1] != '' %} : {{item_info[player[itemid]][1]}} {% endif %}">
+                                                                        </a>
+                                                                        {% endif %}
                                                                         {% endfor %}
 
                                                                         <button type="submit" class="btn btn-link"

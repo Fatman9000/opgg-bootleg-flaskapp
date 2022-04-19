@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% block title %} <h3>User</h3> {% endblock %}
+<div id="accordion-user">
+    <div class="card">
+        <div class="card-header" id="heading-user">
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-user" aria-expanded="true"
+                    aria-controls="collapse-user">
+                    <img src="/static/{{current_version}}/img/profileicon/{{ player_info.userData[0]['profileIconId'] }}.png"
+                        height="32px" width="32px">
+                    {{name}}
+                </button>
+            </h5>
+        </div>
+        <div id="collapse-user" class="collapse show" aria-labelledby="heading-user" data-parent="#accordion-user">
+            <div class="card-body">
+                <div class="card-text">
+                    <table style="border-collapse: separate; border-spacing: 10px;">
+                        <tr>
+                            <td>Name</td>
+                            <td>{{player_info["name"]}}</td>
+                        </tr>
+                        <tr>
+                            <td>userData</td>
+                            <td>{{player_info["userData"][0]}}</td>
+                        </tr>
+                        <tr>
+                            <td>summonerEntries</td>
+                            <td>{{player_info["summonerEntries"][0]}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
