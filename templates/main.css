@@ -1,0 +1,12 @@
+.card-table {
+  border-spacing: 10px;
+}
+
+.table-key {
+  width: 130px;
+}
+
+.table-value{
+  word-break: break-all;
+  border-collapse: separate; 
+}

@@ -17,17 +17,17 @@
         <div id="collapse-user" class="collapse show" aria-labelledby="heading-user" data-parent="#accordion-user">
             <div class="card-body">
                 <div class="card-text">
-                    <table style="border-collapse: separate; border-spacing: 10px;">
+                    <table class="card-table">
                         <tr>
                             <td>Name</td>
-                            <td>{{player_info["name"]}}</td>
+                            <td class="table-value">{{player_info["name"]}}</td>
                         </tr>
                         <tr>
                             <td>userData</td>
-                            <td>{{player_info["userData"][0]}}</td>
+                            <td class="table-value">{{player_info["userData"][0]}}</td>
                         </tr>
                         <tr>
-                            <td>summonerEntries</td>
+                            <td class="table-key">summonerEntries</td>
                             <td>{{player_info["summonerEntries"][0]}}</td>
                         </tr>
                     </table>

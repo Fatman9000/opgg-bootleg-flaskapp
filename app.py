@@ -5,8 +5,6 @@ from flask import (Flask, flash, redirect, render_template, request, session,
 import shutil
 from pymongo import MongoClient
 import League_opgg_bootleg as lob
-from user import User
-from database import Database
 from datetime import datetime
 import requests
 import urllib.request
@@ -23,17 +21,20 @@ def check_version():
     url = "https://ddragon.leagueoflegends.com/api/versions.json"
     r = requests.get(url)
     directories = os.listdir("./static/")
-    session["current_version"] = r.json()[0]
-    
-    if r.json()[0] not in directories:
-        urllib.request.urlretrieve(f"https://ddragon.leagueoflegends.com/cdn/dragontail-{r.json()[0]}.tgz", f"dragontail-{r.json()[0]}.tgz")
-        temp_tar = tarfile.open(f"dragontail-{r.json()[0]}.tgz")
-        shutil.rmtree("./static/")
-        os.mkdir("./static")
+    current_version = r.json()[0]
+    if current_version not in directories:
+        urllib.request.urlretrieve(f"https://ddragon.leagueoflegends.com/cdn/dragontail-{current_version}.tgz", f"dragontail-{current_version}.tgz")
+        temp_tar = tarfile.open(f"dragontail-{current_version}.tgz")
+        for f in os.listdir(directories):
+            if f != "css":
+                os.remove(os.path.join(directories,f))
+        # shutil.rmtree(f"./static/{r.json()[0]}")
+        # shutil.rmtree("./static/img")
+        # shutil.rmtree("./static/lolpatch")
         temp_tar.extractall(f"./static", numeric_owner=True)
         temp_tar.close()
-        os.remove(f"dragontail-{r.json()[0]}.tgz")
-        lob.db_patch_data(session["current_version"])
+        os.remove(f"dragontail-{current_version}.tgz")
+        lob.db_patch_data(current_version)
 
         
 @app.route("/")
@@ -44,7 +45,7 @@ def home_page():
 @app.route('/validuser', methods=['GET', 'POST'])
 def index():
     name = request.form["username"]
-    User.login(name)
+    session["name"] = name
     return redirect("/matchlist")
     # return render_template('index.html')
 
@@ -83,6 +84,11 @@ def selected_match(matchid):
     player_info = league_app(session["name"])
     del player_info["_id"]
     match = lob.display_match(matchid)
+    for x in range(10):
+        try:
+            del match["info"]["participants"][x]["challenges"]
+        except:
+            pass
     item_info = lob.get_item_info(matchid)
     print()
     return render_template("match_display.html", match_data=match, player_info=player_info, name=session["name"], mydate=datetime,  current_version=session["current_version"], item_info=item_info)

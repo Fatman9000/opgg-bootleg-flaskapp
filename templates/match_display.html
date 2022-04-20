@@ -89,6 +89,7 @@
                                                                   </form>
                                                             </h5>
                                                       </div>
+                                                      
                                                       <div id="collapse-players-{{loop.index}}" class="collapse"
                                                             aria-labelledby="heading-players-{{loop.index}}"
                                                             data-parent="#accordion-players-{{loop.index}}">
@@ -97,7 +98,7 @@
                                                                         {% for key, value in player.items() %}
                                                                         <tr>
                                                                               <td>{{key}}</td>
-                                                                              <td>{{value}}</td>
+                                                                              <td class="table-value">{{value}}</td>
                                                                         </tr>
                                                                         {% endfor %}
                                                                   </table>
