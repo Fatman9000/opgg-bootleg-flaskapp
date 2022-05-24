@@ -22,15 +22,13 @@ def check_version():
     r = requests.get(url)
     directories = os.listdir("./static/")
     current_version = r.json()[0]
+    session["current_version"] = r.json()[0]
     if current_version not in directories:
         urllib.request.urlretrieve(f"https://ddragon.leagueoflegends.com/cdn/dragontail-{current_version}.tgz", f"dragontail-{current_version}.tgz")
         temp_tar = tarfile.open(f"dragontail-{current_version}.tgz")
-        for f in os.listdir(directories):
-            if f != "css":
-                os.remove(os.path.join(directories,f))
-        # shutil.rmtree(f"./static/{r.json()[0]}")
-        # shutil.rmtree("./static/img")
-        # shutil.rmtree("./static/lolpatch")
+        for f in directories:
+            if f not in ["css", "dragonhead.js", "languages.js", "languages.json"]:
+                shutil.rmtree(f"./static/{f}")
         temp_tar.extractall(f"./static", numeric_owner=True)
         temp_tar.close()
         os.remove(f"dragontail-{current_version}.tgz")
@@ -67,16 +65,6 @@ def matchlist():
 def update_matchlist():
     player_info = league_app(session["name"], True)
     return render_template("match_list.html", player_info=player_info, name=session["name"], current_version=session["current_version"])
-
-# @app.route('/match', methods=['GET', 'POST'])
-# def match():
-#     match_form = MatchForm()
-#     if match_form.validate_on_submit():
-#         session['selected_match'] = match_form.match_id.data
-#         return redirect('/match/{}'.format(session['selected_match']))
-#     matches=session.get('matches')
-#     return render_template('match_list.html', form=match_form, matches=session["matches"])
-
 
 @app.route('/match/<matchid>', methods=['GET', 'POST'])
 @requires_user

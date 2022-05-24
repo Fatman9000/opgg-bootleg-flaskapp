@@ -70,7 +70,7 @@
                                                                         {% set itemid = "item" + x|string %}
                                                                         {% if player[itemid] != 0 %}
                                                                         <a
-                                                                              href="https://leagueoflegends.fandom.com/wiki/{{ item_info[player[itemid]][0] }}">
+                                                                              href="https://leagueoflegends.fandom.com/wiki/{{ item_info[player[itemid]][0] }}" target="_blank">
                                                                               <img src="/static/{{current_version}}/img/item/{{ player[itemid] }}.png"
                                                                                     data-bs-toggle="tooltip"
                                                                                     id="{{ player[itemid] }}"
