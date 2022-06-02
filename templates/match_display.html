@@ -32,11 +32,21 @@
                                                       <div class="card-header" id="heading-players-{{loop.index}}">
                                                             <h5 class="mb-0">
                                                                   <form action="/validuser" method="post">
+                                                                        {% if player.championName == "FiddleSticks" %}
+                                                                              
                                                                         <a
-                                                                              href="https://leagueoflegends.fandom.com/wiki/{{ player.championName }}/LoL">
+                                                                              href="https://leagueoflegends.fandom.com/wiki/Fiddlesticks/LoL" target="_blank">
+                                                                              <img src="/static/{{current_version}}/img/champion/Fiddlesticks.png"
+                                                                                    height="32px" width="32px">
+                                                                        </a>
+                                                                        {% else %}
+
+                                                                        <a
+                                                                              href="https://leagueoflegends.fandom.com/wiki/{{ player.championName }}/LoL" target="_blank">
                                                                               <img src="/static/{{current_version}}/img/champion/{{ player.championName }}.png"
                                                                                     height="32px" width="32px">
                                                                         </a>
+                                                                        {% endif %}
                                                                         {{ player.champLevel }}
                                                                         {% if player.win == true %}
 
@@ -66,26 +76,26 @@
                                                                               }}
                                                                         </button>
                                                                         {% endif %}
-                                                                        {% for x in range(7) %}
-                                                                        {% set itemid = "item" + x|string %}
-                                                                        {% if player[itemid] != 0 %}
-                                                                        <a
-                                                                              href="https://leagueoflegends.fandom.com/wiki/{{ item_info[player[itemid]][0] }}" target="_blank">
-                                                                              <img src="/static/{{current_version}}/img/item/{{ player[itemid] }}.png"
-                                                                                    data-bs-toggle="tooltip"
-                                                                                    id="{{ player[itemid] }}"
-                                                                                    height="32px" width="32px"
-                                                                                    title="{{ item_info[player[itemid]][0] }}{% if item_info[player[itemid]][1] != '' %} : {{item_info[player[itemid]][1]}} {% endif %}">
-                                                                        </a>
-                                                                        {% endif %}
-                                                                        {% endfor %}
-
                                                                         <button type="submit" class="btn btn-link"
                                                                               id="username" name="username"
                                                                               value="{{ player.summonerName }}"
                                                                               style="float: right;">
                                                                               Go To Profile
                                                                         </button>
+                                                                        {% for x in range(7) %}
+                                                                        {% set itemid = "item" + x|string %}
+                                                                        {% if player[itemid] != 0 %}
+                                                                        <a 
+                                                                              href="https://leagueoflegends.fandom.com/wiki/{{ item_info[player[itemid]][0] }}" target="_blank">
+                                                                              <img src="/static/{{current_version}}/img/item/{{ player[itemid] }}.png"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    id="{{ player[itemid] }}"
+                                                                                    height="32px" width="32px"
+                                                                                    style="float: right;"
+                                                                                    title="{{ item_info[player[itemid]][0] }}{% if item_info[player[itemid]][1] != '' %} : {{item_info[player[itemid]][1]}} {% endif %}">
+                                                                        </a>
+                                                                        {% endif %}
+                                                                        {% endfor %}
                                                                   </form>
                                                             </h5>
                                                       </div>

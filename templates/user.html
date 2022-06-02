@@ -23,13 +23,15 @@
                             <td class="table-value">{{player_info["name"]}}</td>
                         </tr>
                         <tr>
-                            <td>userData</td>
-                            <td class="table-value">{{player_info["userData"][0]}}</td>
+                            <td>Summoner Level</td>
+                            <td class="table-value">{{player_info["userData"][0]["summonerLevel"]}}</td>
                         </tr>
+                        {% if player_info["summonerEntries"][0] %}
                         <tr>
                             <td class="table-key">summonerEntries</td>
                             <td>{{player_info["summonerEntries"][0]}}</td>
                         </tr>
+                        {% endif %}
                     </table>
                 </div>
             </div>
