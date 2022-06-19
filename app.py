@@ -78,8 +78,9 @@ def selected_match(matchid):
         except:
             pass
     item_info = lob.get_item_info(matchid)
+    rune_info = lob.get_rune_info()
     print()
-    return render_template("match_display.html", match_data=match, player_info=player_info, name=session["name"], mydate=datetime,  current_version=session["current_version"], item_info=item_info)
+    return render_template("match_display.html", match_data=match, player_info=player_info, name=session["name"], mydate=datetime,  current_version=session["current_version"], item_info=item_info, rune_info=rune_info)
 
 
 def league_app(name, update_info=False):

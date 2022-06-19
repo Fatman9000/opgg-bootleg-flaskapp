@@ -57,9 +57,7 @@
                                                                               aria-controls="collapse-players-{{loop.index}}"
                                                                               style="color: rgb(31, 142, 205);">
                                                                               {{ player.summonerName }}
-                                                                              {{ player.kills }}/{{
-                                                                              player.deaths}}/{{player.assists
-                                                                              }}
+                                                                              {{ player.kills }}/{{player.deaths}}/{{player.assists}}
                                                                         </button>
 
                                                                         {% else %}
@@ -71,9 +69,7 @@
                                                                               aria-controls="collapse-players-{{loop.index}}"
                                                                               style="color: rgb(198, 68, 62);">
                                                                               {{ player.summonerName }}
-                                                                              {{ player.kills }}/{{
-                                                                              player.deaths}}/{{player.assists
-                                                                              }}
+                                                                              {{ player.kills }}/{{player.deaths}}/{{player.assists}}
                                                                         </button>
                                                                         {% endif %}
                                                                         <button type="submit" class="btn btn-link"
@@ -93,7 +89,7 @@
                                                                                     height="32px" width="32px"
                                                                                     style="float: right;"
                                                                                     title="{{ item_info[player[itemid]][0] }}{% if item_info[player[itemid]][1] != '' %} : {{item_info[player[itemid]][1]}} {% endif %}">
-                                                                        </a>
+                                                                        </a>                                                                        
                                                                         {% endif %}
                                                                         {% endfor %}
                                                                   </form>
@@ -104,12 +100,36 @@
                                                             aria-labelledby="heading-players-{{loop.index}}"
                                                             data-parent="#accordion-players-{{loop.index}}">
                                                             <div class="card-body">
+                                                                  {% for rune in player.perks.styles.0.selections %}
+                                                                        {% for tree in rune_info %}
+                                                                              {% for slot in rune_info[tree]["slots"] %}
+                                                                                    {{slot["runes"][0]}}
+                                                                              {% endfor %}  
+                                                                        {% endfor %}
+                                                                  {% endfor %}
+                                                                  {% for rune in player.perks.styles.1.selections %}
+                                                                        {{rune}}
+                                                                  {% endfor %}
+                                                                  <!-- {% for rune in rune_info %}
+                                                                  <img src="/static/img/{{rune_info[rune]['icon']}}" alt="">
+                                                                  {% endfor %} -->
                                                                   <table>
                                                                         {% for key, value in player.items() %}
+                                                                        {% if key != "perks" %}
                                                                         <tr>
                                                                               <td>{{key}}</td>
                                                                               <td class="table-value">{{value}}</td>
-                                                                        </tr>
+                                                                        </tr>      
+                                                                        {% else %}
+                                                                        <tr>
+                                                                              <td>Runes</td>
+                                                                              <td class="table-value">
+                                                                                    {% for rune in rune_info %}
+                                                                                    {{rune_info[rune]}}
+                                                                                    {% endfor %}
+                                                                              </td>
+                                                                        </tr>     
+                                                                        {% endif %}
                                                                         {% endfor %}
                                                                   </table>
                                                             </div>
@@ -142,7 +162,7 @@
                                                       <td>{{key}}</td>
                                                       <td>{{value}}</td>
                                                 </tr>
-                                                {% endfor %}
+                                                {% endfor %} 
                                           </table>
                                     </div>
                               </div>

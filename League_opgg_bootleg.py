@@ -1,5 +1,7 @@
+from __future__ import print_function
 import json
 import os
+from pydoc import describe
 import requests as r
 from pymongo import MongoClient
 import re
@@ -189,6 +191,12 @@ def get_item_info(match_id):
     return item_info 
     
 
+def get_rune_info():
+    rune_info = {}
+    trees = [8000, 8100, 8200, 8300, 8400]
+    for tree in trees:
+        rune_info[tree] = db.runeData.find_one({"id": tree}, {"slots.runes.id" : 1 , "slots.runes.key" : 1, "icon" : 1, "shortDesc" : 1,"_id" : 0})
+    return rune_info 
 
 def return_match_ids(league_name=None):
     pass
