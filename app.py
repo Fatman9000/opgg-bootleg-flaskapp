@@ -1,14 +1,15 @@
 import os
-from decorators import requires_user
-from flask import Flask, flash, redirect, render_template, request, session, url_for
 import shutil
-from pymongo import MongoClient
-import league_opgg_bootleg as lob
-from datetime import datetime
-import requests
-import urllib.request
 import tarfile
+import urllib.request
+from datetime import datetime
 
+import requests
+from flask import Flask, redirect, render_template, request, session
+from pymongo import MongoClient
+
+import league_opgg_bootleg as lob
+from decorators import requires_user
 
 app = Flask(__name__)
 

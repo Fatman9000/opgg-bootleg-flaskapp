@@ -1,9 +1,9 @@
 import json
 import os
 import re
+
 import requests as r
 from pymongo import MongoClient
-
 
 with open("./config/config.json") as file:
     configsettings = json.load(file)
@@ -39,7 +39,7 @@ def pull_user_data(league_name, update_info):
         {"name": re.compile("^" + re.escape(league_name) + "$", re.IGNORECASE)}
     )
 
-    if update_info == False:
+    if update_info is False:
         if player_in_database:
             return player_in_database
 
@@ -63,7 +63,7 @@ def pull_user_data(league_name, update_info):
         "matchIds": match_history,
     }
 
-    if update_info == True:
+    if update_info is True:
         update_player_info(player_info, league_name)
     else:
         db.playerData.insert_one(player_info)
@@ -103,8 +103,8 @@ def get_summoner_entries(user_data):
             headers=headers,
         ).json()
         return summoner_entries
-    except Exception as e:
-        print("failed to pull user data: error: {}".format(e))
+    except Exception as err:
+        print(f"failed to pull user data: error: {err}")
     return False
 
 
@@ -116,8 +116,8 @@ def get_summoner_history(user_data):
             ),
             headers=headers,
         ).json()
-    except Exception as e:
-        print("failed to pull user data: error: {}".format(e))
+    except Exception as err:
+        print(f"failed to pull user data: error: {err}")
     return match_history
 
 
