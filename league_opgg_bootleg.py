@@ -1,10 +1,8 @@
-from __future__ import print_function
 import json
 import os
-from pydoc import describe
+import re
 import requests as r
 from pymongo import MongoClient
-import re
 
 
 with open("./config/config.json") as file:
@@ -19,8 +17,11 @@ except FileNotFoundError:
     print("No api key file found")
     exit()
 
-headers = {"Content-Type": "application/json",
-            "Application-Type": "application/json", "X-Riot-Token": api_key}
+headers = {
+    "Content-Type": "application/json",
+    "Application-Type": "application/json",
+    "X-Riot-Token": api_key,
+}
 
 
 def pull_user_data(league_name, update_info):
@@ -35,8 +36,9 @@ def pull_user_data(league_name, update_info):
     """
     existing_player_info = db.playerData
     player_in_database = existing_player_info.find_one(
-        {'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)})
-    
+        {"name": re.compile("^" + re.escape(league_name) + "$", re.IGNORECASE)}
+    )
+
     if update_info == False:
         if player_in_database:
             return player_in_database
@@ -44,7 +46,6 @@ def pull_user_data(league_name, update_info):
     user_data = get_summoner(league_name)
     summoner_entries = get_summoner_entries(user_data)
     match_history = get_summoner_history(user_data)
-    
 
     try:
         for match_id in player_in_database["matchIds"]:
@@ -55,9 +56,11 @@ def pull_user_data(league_name, update_info):
 
     player_info = {
         "name": league_name,
-        "userData": [user_data.json(), ],
+        "userData": [
+            user_data.json(),
+        ],
         "summonerEntries": summoner_entries,
-        "matchIds": match_history
+        "matchIds": match_history,
     }
 
     if update_info == True:
@@ -65,16 +68,17 @@ def pull_user_data(league_name, update_info):
     else:
         db.playerData.insert_one(player_info)
     return player_info
-    
+
 
 def get_summoner(league_name):
     """
     Takes the summoner's name to query the riot games api for basic account info.
-    
+
     :param league_name (str): League of Legends username of the user to be returned
     """
     url = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/{}".format(
-        league_name)
+        league_name
+    )
     try:
         user_data = r.get(url=url, headers=headers)
     except Exception:
@@ -88,21 +92,30 @@ def get_summoner_entries(user_data):
     """
     Takes the account information returned by get_summoner to query the riot games api for
     the user's, leagueId, summonerId, wins and losses, and rank info.
-    
-    :param user_data (): 
+
+    :param user_data ():
     """
     try:
-        summoner_entries = r.get("https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/{}".format(
-            user_data.json()["id"]), headers=headers).json()
+        summoner_entries = r.get(
+            "https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/{}".format(
+                user_data.json()["id"]
+            ),
+            headers=headers,
+        ).json()
+        return summoner_entries
     except Exception as e:
         print("failed to pull user data: error: {}".format(e))
-    return summoner_entries
+    return False
 
 
 def get_summoner_history(user_data):
     try:
-        match_history = r.get("https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{}/ids?start=0&count=20".format(
-            user_data.json()["puuid"]), headers=headers).json()
+        match_history = r.get(
+            "https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{}/ids?start=0&count=20".format(
+                user_data.json()["puuid"]
+            ),
+            headers=headers,
+        ).json()
     except Exception as e:
         print("failed to pull user data: error: {}".format(e))
     return match_history
@@ -112,11 +125,20 @@ def update_player_info(player_info, league_name):
     """
     Updates existing player info in the database with provided player info
     """
-    db.playerData.update_one({'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)}, {'$set': {
-        'userData': player_info['userData'], 'summonerEntries': player_info['summonerEntries']}})
-    for match_id in player_info['matchIds']:
-        db.playerData.update_one({'name': re.compile(
-            '^' + re.escape(league_name) + '$', re.IGNORECASE)}, {'$addToSet': {'matchIds': match_id}})
+    db.playerData.update_one(
+        {"name": re.compile("^" + re.escape(league_name) + "$", re.IGNORECASE)},
+        {
+            "$set": {
+                "userData": player_info["userData"],
+                "summonerEntries": player_info["summonerEntries"],
+            }
+        },
+    )
+    for match_id in player_info["matchIds"]:
+        db.playerData.update_one(
+            {"name": re.compile("^" + re.escape(league_name) + "$", re.IGNORECASE)},
+            {"$addToSet": {"matchIds": match_id}},
+        )
 
 
 def display_match(match_id=None, league_name=None):
@@ -128,8 +150,11 @@ def display_match(match_id=None, league_name=None):
     except FileNotFoundError:
         print("No api key file found")
         exit()
-    headers = {"Content-Type": "application/json",
-               "Application-Type": "application/json", "X-Riot-Token": api_key}
+    headers = {
+        "Content-Type": "application/json",
+        "Application-Type": "application/json",
+        "X-Riot-Token": api_key,
+    }
 
     existing_match_info = db.matchData.find_one({"_id": match_id})
 
@@ -137,8 +162,12 @@ def display_match(match_id=None, league_name=None):
         return existing_match_info
     else:
         try:
-            match_display = r.get("https://americas.api.riotgames.com/lol/match/v5/matches/{}".format(
-                match_id), headers=headers).json()
+            match_display = r.get(
+                "https://americas.api.riotgames.com/lol/match/v5/matches/{}".format(
+                    match_id
+                ),
+                headers=headers,
+            ).json()
         except Exception as e:
             print("failed to pull match data: error: {}".format(e))
         match_display["_id"] = match_id
@@ -173,30 +202,43 @@ def get_item_info(match_id):
     """
     Pulls item info for a given match from the database and returns it
     """
-    existing_match_info = db.matchData.find_one({"_id": match_id}, {"info.participants.item0": 1, "info.participants.item1": 1, "info.participants.item2": 1,
-                                                "info.participants.item3": 1, "info.participants.item4": 1, "info.participants.item5": 1, "info.participants.item6": 1})
+    existing_match_info = db.matchData.find_one(
+        {"_id": match_id},
+        {
+            "info.participants.item0": 1,
+            "info.participants.item1": 1,
+            "info.participants.item2": 1,
+            "info.participants.item3": 1,
+            "info.participants.item4": 1,
+            "info.participants.item5": 1,
+            "info.participants.item6": 1,
+        },
+    )
     player_num = 0
     item_info = {}
     for player_items in existing_match_info["info"]["participants"]:
 
         for item in player_items:
             item_id = existing_match_info["info"]["participants"][player_num][item]
-            item_desc = db.patchData.find_one({"type" : "item"}, {f"data.{item_id}.plaintext" : 1, f"data.{item_id}.name" : 1, "_id" : 0})
-            
-            if item_id != 0 and item_desc['data'][f"{item_id}"]['plaintext'] != '':
-                item_info[item_id] = item_desc['data'][f"{item_id}"]['name'], item_desc['data'][f"{item_id}"]['plaintext']
-            elif item_id != 0 and item_desc['data'][f"{item_id}"]['name'] != '':
-                item_info[item_id] = item_desc['data'][f"{item_id}"]['name'], ''
-        player_num+=1  
-    return item_info 
-    
+            item_desc = db.patchData.find_one(
+                {"type": "item"},
+                {f"data.{item_id}.plaintext": 1, f"data.{item_id}.name": 1, "_id": 0},
+            )
+
+            if item_id != 0 and item_desc["data"][f"{item_id}"]["plaintext"] != "":
+                item_info[item_id] = (
+                    item_desc["data"][f"{item_id}"]["name"],
+                    item_desc["data"][f"{item_id}"]["plaintext"],
+                )
+            elif item_id != 0 and item_desc["data"][f"{item_id}"]["name"] != "":
+                item_info[item_id] = item_desc["data"][f"{item_id}"]["name"], ""
+        player_num += 1
+    return item_info
+
 
 def get_rune_info():
-    rune_info = {}
-    trees = [8000, 8100, 8200, 8300, 8400]
-    for tree in trees:
-        rune_info[tree] = db.runeData.find_one({"id": tree}, {"slots.runes.id" : 1 , "slots.runes.key" : 1, "icon" : 1, "shortDesc" : 1,"_id" : 0})
-    return rune_info 
+    pass
+
 
 def return_match_ids(league_name=None):
     pass
@@ -207,11 +249,12 @@ if __name__ == "__main__":
 
     existing_player_info = db.playerData
     player_in_database = existing_player_info.find_one(
-        {'name': re.compile('^' + re.escape(league_name) + '$', re.IGNORECASE)})
+        {"name": re.compile("^" + re.escape(league_name) + "$", re.IGNORECASE)}
+    )
 
     if player_in_database is None:
         print("Info Not in database")
         pud = pull_user_data(league_name)
 
 
-#this comment is for testing
+# this comment is for testing

@@ -1,10 +1,9 @@
 import os
 from decorators import requires_user
-from flask import (Flask, flash, redirect, render_template, request, session,
-                   url_for)
+from flask import Flask, flash, redirect, render_template, request, session, url_for
 import shutil
 from pymongo import MongoClient
-import League_opgg_bootleg as lob
+import league_opgg_bootleg as lob
 from datetime import datetime
 import requests
 import urllib.request
@@ -13,7 +12,7 @@ import tarfile
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'smash like now'
+app.config["SECRET_KEY"] = "smash like now"
 
 
 @app.before_first_request
@@ -24,7 +23,10 @@ def check_version():
     current_version = r.json()[0]
     session["current_version"] = r.json()[0]
     if current_version not in directories:
-        urllib.request.urlretrieve(f"https://ddragon.leagueoflegends.com/cdn/dragontail-{current_version}.tgz", f"dragontail-{current_version}.tgz")
+        urllib.request.urlretrieve(
+            f"https://ddragon.leagueoflegends.com/cdn/dragontail-{current_version}.tgz",
+            f"dragontail-{current_version}.tgz",
+        )
         temp_tar = tarfile.open(f"dragontail-{current_version}.tgz")
         for f in directories:
             if f not in ["css", "dragonhead.js", "languages.js", "languages.json"]:
@@ -34,13 +36,13 @@ def check_version():
         os.remove(f"dragontail-{current_version}.tgz")
         lob.db_patch_data(current_version)
 
-        
+
 @app.route("/")
 def home_page():
     return render_template("index.html")
 
 
-@app.route('/validuser', methods=['GET', 'POST'])
+@app.route("/validuser", methods=["GET", "POST"])
 def index():
     name = request.form["username"]
     session["name"] = name
@@ -56,17 +58,28 @@ def matchlist():
         del player_info["_id"]
     except:
         pass
-    session['matches'] = player_info['matchIds']
-    return render_template("match_list.html", player_info=player_info, name=session["name"], current_version=session["current_version"])
+    session["matches"] = player_info["matchIds"]
+    return render_template(
+        "match_list.html",
+        player_info=player_info,
+        name=session["name"],
+        current_version=session["current_version"],
+    )
 
 
-@app.route("/matchlist/updated", methods=['GET'])
+@app.route("/matchlist/updated", methods=["GET"])
 @requires_user
 def update_matchlist():
     player_info = league_app(session["name"], True)
-    return render_template("match_list.html", player_info=player_info, name=session["name"], current_version=session["current_version"])
+    return render_template(
+        "match_list.html",
+        player_info=player_info,
+        name=session["name"],
+        current_version=session["current_version"],
+    )
 
-@app.route('/match/<matchid>', methods=['GET', 'POST'])
+
+@app.route("/match/<matchid>", methods=["GET", "POST"])
 @requires_user
 def selected_match(matchid):
     player_info = league_app(session["name"])
@@ -78,9 +91,17 @@ def selected_match(matchid):
         except:
             pass
     item_info = lob.get_item_info(matchid)
-    rune_info = lob.get_rune_info()
+    # rune_info = lob.get_rune_info()
     print()
-    return render_template("match_display.html", match_data=match, player_info=player_info, name=session["name"], mydate=datetime,  current_version=session["current_version"], item_info=item_info, rune_info=rune_info)
+    return render_template(
+        "match_display.html",
+        match_data=match,
+        player_info=player_info,
+        name=session["name"],
+        mydate=datetime,
+        current_version=session["current_version"],
+        item_info=item_info,
+    )
 
 
 def league_app(name, update_info=False):

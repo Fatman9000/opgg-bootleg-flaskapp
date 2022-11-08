@@ -101,18 +101,11 @@
                                                             data-parent="#accordion-players-{{loop.index}}">
                                                             <div class="card-body">
                                                                   {% for rune in player.perks.styles.0.selections %}
-                                                                        {% for tree in rune_info %}
-                                                                              {% for slot in rune_info[tree]["slots"] %}
-                                                                                    {{slot["runes"][0]}}
-                                                                              {% endfor %}  
-                                                                        {% endfor %}
+                                                                        {{rune}}
                                                                   {% endfor %}
                                                                   {% for rune in player.perks.styles.1.selections %}
                                                                         {{rune}}
                                                                   {% endfor %}
-                                                                  <!-- {% for rune in rune_info %}
-                                                                  <img src="/static/img/{{rune_info[rune]['icon']}}" alt="">
-                                                                  {% endfor %} -->
                                                                   <table>
                                                                         {% for key, value in player.items() %}
                                                                         {% if key != "perks" %}
